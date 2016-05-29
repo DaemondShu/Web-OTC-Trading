@@ -6,6 +6,7 @@ import net.sf.json.JSONObject;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 import javax.xml.crypto.Data;
 
 /**
@@ -36,9 +37,11 @@ public class LogicActionBean implements LogicAction
         {
             Order order = (Order) JSONObject.toBean(JSONObject.fromObject(data),Order.class);
             System.out.println(order.toString());
-            order.setStatus("Done");
+            order.init();
+            dataManager.saveOrder(order);
+
+
             dataManager.flush();
-            //ok: add to cache
         }
         catch (Exception e)
         {
@@ -48,6 +51,18 @@ public class LogicActionBean implements LogicAction
         }
         return true;
     }
+
+    /**
+     * 检查交易
+     * @return  完成了几个交易
+     */
+    @Override
+    public int doTrade()
+    {
+        int result = 0;
+        return result;
+    }
+
 
     @Override
     public boolean cancelOrder()

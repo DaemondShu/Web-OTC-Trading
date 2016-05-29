@@ -4,21 +4,26 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Created by monkey_d_asce on 16-5-29.
+ * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
 public class Order
 {
-    private int id;                 //期货id
-    private byte isSell;
+    private int id;
+    private Integer productId;
+    private Integer userId;
+    private Integer brokerId;
+    private Byte isSell;
     private String status;
     private String type;
     private String time;
     private String condition;
     private Integer expectedVol;
-    private int surplusVol;
+    private Integer surplusVol;
     private Double price;
 
     @Id
@@ -34,13 +39,49 @@ public class Order
     }
 
     @Basic
-    @Column(name = "isSell", nullable = false)
-    public byte getIsSell()
+    @Column(name = "productId", nullable = true)
+    public Integer getProductId()
+    {
+        return productId;
+    }
+
+    public void setProductId(Integer productId)
+    {
+        this.productId = productId;
+    }
+
+    @Basic
+    @Column(name = "userId", nullable = true)
+    public Integer getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(Integer userId)
+    {
+        this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "brokerId", nullable = true)
+    public Integer getBrokerId()
+    {
+        return brokerId;
+    }
+
+    public void setBrokerId(Integer brokerId)
+    {
+        this.brokerId = brokerId;
+    }
+
+    @Basic
+    @Column(name = "isSell", nullable = true)
+    public Byte getIsSell()
     {
         return isSell;
     }
 
-    public void setIsSell(byte isSell)
+    public void setIsSell(Byte isSell)
     {
         this.isSell = isSell;
     }
@@ -70,7 +111,7 @@ public class Order
     }
 
     @Basic
-    @Column(name = "time", nullable = true, length = 45)
+    @Column(name = "time", nullable = false, length = 45)
     public String getTime()
     {
         return time;
@@ -82,7 +123,7 @@ public class Order
     }
 
     @Basic
-    @Column(name = "condition", nullable = true, length = 45)
+    @Column(name = "condition", nullable = false, length = 45)
     public String getCondition()
     {
         return condition;
@@ -106,13 +147,13 @@ public class Order
     }
 
     @Basic
-    @Column(name = "surplusVol", nullable = false)
-    public int getSurplusVol()
+    @Column(name = "surplusVol", nullable = true)
+    public Integer getSurplusVol()
     {
         return surplusVol;
     }
 
-    public void setSurplusVol(int surplusVol)
+    public void setSurplusVol(Integer surplusVol)
     {
         this.surplusVol = surplusVol;
     }
@@ -138,13 +179,16 @@ public class Order
         Order order = (Order) o;
 
         if (id != order.id) return false;
-        if (isSell != order.isSell) return false;
-        if (surplusVol != order.surplusVol) return false;
+        if (productId != null ? !productId.equals(order.productId) : order.productId != null) return false;
+        if (userId != null ? !userId.equals(order.userId) : order.userId != null) return false;
+        if (brokerId != null ? !brokerId.equals(order.brokerId) : order.brokerId != null) return false;
+        if (isSell != null ? !isSell.equals(order.isSell) : order.isSell != null) return false;
         if (status != null ? !status.equals(order.status) : order.status != null) return false;
         if (type != null ? !type.equals(order.type) : order.type != null) return false;
         if (time != null ? !time.equals(order.time) : order.time != null) return false;
         if (condition != null ? !condition.equals(order.condition) : order.condition != null) return false;
         if (expectedVol != null ? !expectedVol.equals(order.expectedVol) : order.expectedVol != null) return false;
+        if (surplusVol != null ? !surplusVol.equals(order.surplusVol) : order.surplusVol != null) return false;
         if (price != null ? !price.equals(order.price) : order.price != null) return false;
 
         return true;
@@ -154,30 +198,23 @@ public class Order
     public int hashCode()
     {
         int result = id;
-        result = 31 * result + (int) isSell;
+        result = 31 * result + (productId != null ? productId.hashCode() : 0);
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (brokerId != null ? brokerId.hashCode() : 0);
+        result = 31 * result + (isSell != null ? isSell.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (condition != null ? condition.hashCode() : 0);
         result = 31 * result + (expectedVol != null ? expectedVol.hashCode() : 0);
-        result = 31 * result + surplusVol;
+        result = 31 * result + (surplusVol != null ? surplusVol.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString()
+    public void init()
     {
-        return "Order{" +
-                "id=" + id +
-                ", isSell=" + isSell +
-                ", status='" + status + '\'' +
-                ", type='" + type + '\'' +
-                ", time='" + time + '\'' +
-                ", condition='" + condition + '\'' +
-                ", expectedVol=" + expectedVol +
-                ", surplusVol=" + surplusVol +
-                ", price=" + price +
-                '}';
+        this.surplusVol = this.expectedVol;
+        this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 }

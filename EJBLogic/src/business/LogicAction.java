@@ -8,4 +8,7 @@ public interface LogicAction
     boolean createOrder(String data);
 
     boolean cancelOrder();
+
+
+    int doTrade();
 }

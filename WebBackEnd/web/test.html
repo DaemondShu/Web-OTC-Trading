@@ -49,29 +49,27 @@
             action : "register",
             userData : JSON.stringify({
                 username : "tempuser",
-                company : "M",
+                company : "M",          //用户公司名，显示用的
                 password : "temppwd",
-                role : "BROKER"
+                role : "BROKER"       //用户职能，只能注册为BROKER或者是TRADER，默认是BROKER
             })
         });
     }
 
     function testCreateOrder()
     {
-        ajax("User","get", {
+        ajax("Logic","get", {
             action : "createOrder",
             orderData : JSON.stringify({
                 productId: 1,
-                userId: 3,
+                userId: 3,          //订单发起人id
                 brokerId: 2,       //中介id
                 isSell:true,      //买还是卖
                 status: "TODO",   //需要执行
                 type: "MARKET",   //订单类型，三种：MARKET，LIMIT(优于当前市场价时购买/交易)，STOP(优于用户指定价时购买/交易)
                 condition: ">=1124",  //针对LIMIT和STOP订单的触发条件
-                expectedVol: 100, //预期要卖多少
-
-
-
+                expectedVol: 100, //预期交易量
+                price: 100.5 ,  //交易单价
 
             })
         })

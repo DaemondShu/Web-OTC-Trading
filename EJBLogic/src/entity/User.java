@@ -6,17 +6,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by monkey_d_asce on 16-5-29.
+ * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
 public class User
 {
-
     private int id;
-    private String username;    //用户名
-    private String password;    //用户密码
-    private String role;        //职能，注册中介是BROKER，注册普通交易用户是TRADER
-    private String company;     //用户公司名，用于显示在网页上
+    private String username;
+    private String password;
+    private String role;
+    private String company;
 
     @Id
     @Column(name = "id", nullable = false)

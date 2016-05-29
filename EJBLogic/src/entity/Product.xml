@@ -12,7 +12,7 @@
                 <column name="name" length="45"/>
             </basic>
             <basic name="kind">
-                <column name="kind" nullable="false" length="45"/>
+                <column name="kind" length="45"/>
             </basic>
         </attributes>
     </entity>

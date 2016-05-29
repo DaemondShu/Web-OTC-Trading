@@ -73,7 +73,7 @@ public class User extends HttpServlet
             writer.write(t);
         }
 
-        catch (Exception e)  //内部未知错误,一般是数据库操作错误
+        catch (Exception e)  //内部未知错误
         {
 
             response.setStatus(500);

@@ -48,7 +48,8 @@ public class Logic extends HttpServlet
             switch (val(ACTION))
             {
                 case "createOrder":
-                    orderAction.createOrder(val(ORDERDATA));
+                    if (!orderAction.createOrder(val(ORDERDATA)))
+                        throw new LogicException("create order failed");
                     break;
                 case "cancel":
                     break;

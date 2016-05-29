@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by monkey_d_asce on 16-5-29.
+ * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
 public class Product
@@ -40,7 +40,7 @@ public class Product
     }
 
     @Basic
-    @Column(name = "kind", nullable = true, length = 45)
+    @Column(name = "kind", nullable = false, length = 45)
     public String getKind()
     {
         return kind;

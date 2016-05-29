@@ -6,14 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by monkey_d_asce on 16-5-29.
+ * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
 public class Trade
 {
     private int id;
     private String time;
-    private int quantity;
+    private Integer quantity;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -40,13 +40,13 @@ public class Trade
     }
 
     @Basic
-    @Column(name = "quantity", nullable = false)
-    public int getQuantity()
+    @Column(name = "quantity", nullable = true)
+    public Integer getQuantity()
     {
         return quantity;
     }
 
-    public void setQuantity(int quantity)
+    public void setQuantity(Integer quantity)
     {
         this.quantity = quantity;
     }
@@ -60,8 +60,8 @@ public class Trade
         Trade trade = (Trade) o;
 
         if (id != trade.id) return false;
-        if (quantity != trade.quantity) return false;
         if (time != null ? !time.equals(trade.time) : trade.time != null) return false;
+        if (quantity != null ? !quantity.equals(trade.quantity) : trade.quantity != null) return false;
 
         return true;
     }
@@ -71,7 +71,7 @@ public class Trade
     {
         int result = id;
         result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + quantity;
+        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         return result;
     }
 }

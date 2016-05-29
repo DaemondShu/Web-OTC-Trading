@@ -12,7 +12,7 @@
                 <column name="time" length="45"/>
             </basic>
             <basic name="quantity">
-                <column name="quantity" precision="11"/>
+                <column name="quantity" nullable="false" precision="11"/>
             </basic>
         </attributes>
     </entity>

@@ -13,6 +13,7 @@
         <class>entity.Order</class>
         <class>entity.Product</class>
 
+
         <properties>
             <property name="showSql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>

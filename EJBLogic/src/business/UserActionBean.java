@@ -67,11 +67,11 @@ public class UserActionBean implements UserAction
             if (!user.checkRole())
                 return "Role can only be one of ['BROKER','TRADER']";
             dataManager.saveUser(user);
+            dataManager.flush();  //不加这句话，一旦persist出错，就会在ejb结束之后，异常直接抛给了servlet
             System.out.println(user.toString());
         }
         catch (Exception e)
         {
-           //context.setRollbackOnly();
             e.printStackTrace();
             return "register failed with some reason";
         }
@@ -80,4 +80,5 @@ public class UserActionBean implements UserAction
 
 
 }
-
+/*
+*/

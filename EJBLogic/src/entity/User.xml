@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="entity.User">
-        <table name="user" schema="otc" />
+        <table name="user" schema="otc"/>
         <attributes>
             <id name="id">
                 <column name="id" precision="11"/>

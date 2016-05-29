@@ -8,6 +8,8 @@ import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by monkey_d_asce on 16-5-27.
@@ -72,6 +74,5 @@ public class DataManagerBean implements DataManager
     {
         entityManager.flush();
     }
-
 
 }
