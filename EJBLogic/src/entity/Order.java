@@ -4,6 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
-public class Order
+public class Order implements Serializable
 {
     private int id;
     private Integer productId;
@@ -216,5 +217,26 @@ public class Order
     {
         this.surplusVol = this.expectedVol;
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        if (this.type.equals("MARKET"))
+            this.setStatus("DOING");
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Order{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", userId=" + userId +
+                ", brokerId=" + brokerId +
+                ", isSell=" + isSell +
+                ", status='" + status + '\'' +
+                ", type='" + type + '\'' +
+                ", time='" + time + '\'' +
+                ", condition='" + condition + '\'' +
+                ", expectedVol=" + expectedVol +
+                ", surplusVol=" + surplusVol +
+                ", price=" + price +
+                '}';
     }
 }

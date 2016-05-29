@@ -10,4 +10,6 @@ public interface QueryAction
      * @return
      */
     String QueryOrder(String filter);
+
+    String productList(String filter);
 }

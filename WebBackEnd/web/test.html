@@ -23,12 +23,14 @@
     <button onclick="testReg();"> testReg</button>
 </div>
 
-<div class="testOrder">
+<div class="testLogic">
     <button onclick="testCreateOrder();"> testCreateOrder</button>
-
-
+    <button onclick="testDoTrade();"> testDoTrade</button>
 </div>
 
+<div>
+    <button onclick="testQueryProductList();"> testQueryProductList</button>
+</div>
 
 </body>
 
@@ -58,7 +60,7 @@
 
     function testCreateOrder()
     {
-        ajax("Logic","get", {
+        ajax("Logic","post", {
             action : "createOrder",
             orderData : JSON.stringify({
                 productId: 1,
@@ -74,7 +76,25 @@
             })
         })
     }
+    
+    function testDoTrade()
+    {
+        ajax("Logic","post", {
+            action : "doTrade"
+        })
+    }
 
+    function testQueryProductList()
+    {
+        ajax("Query","get",{
+            action: "productList",
+            filter: JSON.stringify({
+
+            })
+        })
+    }
+
+    
     //不打算让用户输入具体的product名，会有出现大小写冲突的情况。
     //broker也是选择的
 

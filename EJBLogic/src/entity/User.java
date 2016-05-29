@@ -4,12 +4,13 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
-public class User
+public class User implements Serializable
 {
     private int id;
     private String username;
@@ -110,5 +111,17 @@ public class User
         if(role == null) return false;
         if (role.equals("BROKER") || role.equals("TRADER")) return true;
         return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", company='" + company + '\'' +
+                '}';
     }
 }

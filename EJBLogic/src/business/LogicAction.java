@@ -9,6 +9,8 @@ public interface LogicAction
 
     boolean cancelOrder();
 
-
     int doTrade();
+
+
+    int doTrade(int productId);
 }

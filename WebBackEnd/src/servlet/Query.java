@@ -1,6 +1,6 @@
 package servlet;
 
-import business.LogicAction;
+import business.QueryAction;
 import exception.LogicException;
 
 import javax.ejb.EJB;
@@ -13,28 +13,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Created by monkey_d_asce on 16-5-29.
+ * Created by monkey_d_asce on 16-5-30.
  */
-@WebServlet("/Logic")
-public class Logic extends HttpServlet
+@WebServlet("/Query")
+public class Query extends HttpServlet
 {
     private static final String ACTION = "action";
-    private static final String ORDERDATA = "orderData";
-    private static final String FILTER = "filter";
     private static final int ERRORCODE = 520;
 
-    @EJB
-    LogicAction logicAction;
-
-
     private HttpServletRequest request;
+
+    @EJB
+    QueryAction queryAction;
 
     private String val(String key)
     {
         String temp = request.getParameter(key);
         return (temp == null) ? "" : temp;
     }
-
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -47,18 +43,13 @@ public class Logic extends HttpServlet
         {
             switch (val(ACTION))
             {
-                case "createOrder":
-                    if (!logicAction.createOrder(val(ORDERDATA)))
-                        throw new LogicException("create order failed");
+                case "productList":
+                    writer.print(queryAction.productList(""));
                     break;
-                case "cancel":
-                    break;
-
-                case "view":
+                case "orderList":
                     break;
 
-                case "doTrade":
-                    logicAction.doTrade(3);
+                case "tradeList":
                     break;
 
                 default:
@@ -77,13 +68,10 @@ public class Logic extends HttpServlet
             response.setStatus(500);
             writer.write("operation failed");
         }
-
-
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        response.setStatus(404);
+        doPost(request,response);
     }
 }

@@ -1,15 +1,15 @@
 package data;
 
 import entity.Order;
+import entity.Product;
 import entity.User;
 
-import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by monkey_d_asce on 16-5-27.
@@ -37,6 +37,8 @@ public class DataManagerBean implements DataManager
 
     @PersistenceContext(unitName = "JPADB")
     private EntityManager entityManager;
+    @EJB
+    private SuperJPA dao;
 
     public DataManagerBean()
     {
@@ -48,7 +50,7 @@ public class DataManagerBean implements DataManager
     {
         try
         {
-            Query query = entityManager.createQuery("select u from User u where u.username=:username");
+            javax.persistence.Query query = entityManager.createQuery("select u from User u where u.username=:username");
             query.setParameter("username",name);
             return (User)query.getSingleResult();
         }
@@ -59,16 +61,53 @@ public class DataManagerBean implements DataManager
 
     }
 
+
     public void saveUser(User user)
     {
         //throw new EJBException("tian na");
+
         entityManager.persist(user);
     }
 
+    public List<Product> getProductList()
+    {
+        SuperQuery query = SuperQuery.forClass(Product.class,entityManager);
+        List<Product> result = dao.query(query);
+        return result;
+    }
+
+    public List<Product> getProduct(Map<String,Object> filter)
+    {
+        SuperQuery query = SuperQuery.forClass(Product.class,entityManager);
+
+        for (Map.Entry<String,Object> item : filter.entrySet() )
+        {
+            query.eq(item.getKey(),item.getValue());
+        }
+
+        List<Product> result = dao.query(query);
+
+        return result;
+    }
+
+
+
     public void saveOrder(Order order)
     {
-        entityManager.persist(order);
+        dao.insert(order);
+        //entityManager.persist(order);
     }
+
+    public void getOrderList()
+    {
+
+    }
+
+    public void getMarketPrice(int productId)
+    {
+
+    }
+
 
     public void flush()
     {

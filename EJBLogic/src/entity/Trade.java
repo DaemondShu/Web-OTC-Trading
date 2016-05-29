@@ -4,12 +4,13 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
-public class Trade
+public class Trade implements Serializable
 {
     private int id;
     private String time;
@@ -73,5 +74,15 @@ public class Trade
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Trade{" +
+                "id=" + id +
+                ", time='" + time + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

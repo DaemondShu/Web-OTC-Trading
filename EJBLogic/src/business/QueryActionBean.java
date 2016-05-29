@@ -1,5 +1,9 @@
 package business;
 
+import data.DataManager;
+import net.sf.json.JSONArray;
+
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.Query;
@@ -10,6 +14,9 @@ import javax.persistence.Query;
 @Stateless(name = "QueryActionEJB")
 public class QueryActionBean implements QueryAction
 {
+    @EJB
+    DataManager dataManager;
+
     public QueryActionBean()
     {
     }
@@ -23,4 +30,12 @@ public class QueryActionBean implements QueryAction
 
         return "[]";
     }
+
+
+    public String productList(String filter)
+    {
+        JSONArray jsonArray = JSONArray.fromObject(dataManager.getProductList());
+        return jsonArray.toString();
+    }
+
 }

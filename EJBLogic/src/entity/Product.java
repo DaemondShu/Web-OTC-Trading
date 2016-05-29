@@ -4,15 +4,27 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by monkey_d_asce on 16-5-30.
  */
 @Entity
-public class Product
+public class Product implements Serializable
 {
     private int id;
     private String name;
+
+    @Override
+    public String toString()
+    {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", kind='" + kind + '\'' +
+                '}';
+    }
+
     private String kind;
 
     @Id
