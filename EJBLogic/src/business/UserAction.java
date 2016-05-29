@@ -1,7 +1,6 @@
 package business;
 
 import javax.ejb.Local;
-import javax.ejb.Remote;
 
 /**
  * Created by monkey_d_asce on 16-5-28.

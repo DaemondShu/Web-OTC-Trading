@@ -44,7 +44,7 @@
 
     function testReg()
     {
-        //登陆时候的两个密码重复的检查在前端做，传给后端的话直接一个json对象就好
+        //登陆时候的两个密码是否相同的检查在前端做，传给后端的话直接一个json对象就好
         ajax("User","get", {
             action : "register",
             userData : JSON.stringify({
@@ -58,8 +58,26 @@
 
     function testCreateOrder()
     {
+        ajax("User","get", {
+            action : "createOrder",
+            orderData : JSON.stringify({
+                productId: 1,
+                userId: 3,
+                brokerId: 2,       //中介id
+                isSell:true,      //买还是卖
+                status: "TODO",   //需要执行
+                type: "MARKET",   //订单类型，三种：MARKET，LIMIT(优于当前市场价时购买/交易)，STOP(优于用户指定价时购买/交易)
+                condition: ">=1124",  //针对LIMIT和STOP订单的触发条件
+                expectedVol: 100, //预期要卖多少
 
+
+
+
+            })
+        })
     }
 
+    //不打算让用户输入具体的product名，会有出现大小写冲突的情况。
+    //broker也是选择的
 
 </script>

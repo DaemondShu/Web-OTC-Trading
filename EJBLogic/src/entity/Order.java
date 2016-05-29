@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Entity
 public class Order
 {
-    private int id;
+    private int id;                 //期货id
     private byte isSell;
     private String status;
     private String type;
@@ -163,5 +163,21 @@ public class Order
         result = 31 * result + surplusVol;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Order{" +
+                "id=" + id +
+                ", isSell=" + isSell +
+                ", status='" + status + '\'' +
+                ", type='" + type + '\'' +
+                ", time='" + time + '\'' +
+                ", condition='" + condition + '\'' +
+                ", expectedVol=" + expectedVol +
+                ", surplusVol=" + surplusVol +
+                ", price=" + price +
+                '}';
     }
 }

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.ejb.*;
 
 /**
+ * 处理用户相关操作
  * Created by monkey_d_asce on 16-5-28.
  */
 
@@ -65,7 +66,7 @@ public class UserActionBean implements UserAction
             User user= (User)JSONObject.toBean(JSONObject.fromObject(userData),User.class);
             if (!user.checkRole())
                 return "Role can only be one of ['BROKER','TRADER']";
-            dataManager.SaveUser(user);
+            dataManager.saveUser(user);
             System.out.println(user.toString());
         }
         catch (Exception e)

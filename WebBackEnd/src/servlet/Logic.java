@@ -1,6 +1,6 @@
 package servlet;
 
-import business.UserAction;
+import business.LogicAction;
 import exception.LogicException;
 
 import javax.ejb.EJB;
@@ -13,28 +13,28 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Created by monkey_d_asce on 16-5-28.
+ * Created by monkey_d_asce on 16-5-29.
  */
-@WebServlet("/User")
-public class User extends HttpServlet
+@WebServlet("/Logic")
+public class Logic extends HttpServlet
 {
     private static final String ACTION = "action";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
-    private static final String USERDATA = "userData";
+    private static final String ORDERDATA = "orderData";
+    private static final String FILTER = "filter";
     private static final int ERRORCODE = 520;
 
-    @EJB(name = "UserAction")
-    private UserAction userAction;
+    @EJB
+    LogicAction orderAction;
+
 
     private HttpServletRequest request;
-
 
     private String val(String key)
     {
         String temp = request.getParameter(key);
         return (temp == null) ? "" : temp;
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -43,45 +43,37 @@ public class User extends HttpServlet
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/plain");
         PrintWriter writer = response.getWriter();
-
         try
         {
             switch (val(ACTION))
             {
-                case "login":
-                    String role = userAction.login(val(USERNAME),val(PASSWORD));
-                    if (role == "")
-                        throw new LogicException("login failed");
-                    writer.write(role);
+                case "createOrder":
+                    orderAction.createOrder(val(ORDERDATA));
+                    break;
+                case "cancel":
                     break;
 
-                case "register":
-                    String error = userAction.register(val(USERDATA));
-                    if (error != null)
-                        throw new LogicException(error);
+                case "view":
+                    break;
 
                 default:
                     throw new LogicException("invalid action");
             }
         }
-
-        catch (LogicException e)  //逻辑错误
+        catch (LogicException e)
         {
             String t = e.getMessage();
             System.out.println(t);
             response.setStatus(ERRORCODE);
             writer.write(t);
         }
-
         catch (Exception e)  //内部未知错误,一般是数据库操作错误
         {
-
             response.setStatus(500);
             writer.write("operation failed");
         }
 
-        writer.flush();
-        writer.close();
+
 
     }
 

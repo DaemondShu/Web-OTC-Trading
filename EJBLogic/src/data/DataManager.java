@@ -1,5 +1,6 @@
 package data;
 
+import entity.Order;
 import entity.User;
 
 import javax.ejb.Local;
@@ -13,5 +14,9 @@ public interface DataManager
 {
     User getUser(String name);
 
-    void SaveUser(User user) throws Exception;
+    void saveUser(User user) throws Exception;
+
+    void saveOrder(Order order);
+
+    void flush();
 }

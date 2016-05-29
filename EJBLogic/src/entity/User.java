@@ -11,11 +11,12 @@ import javax.persistence.Id;
 @Entity
 public class User
 {
+
     private int id;
-    private String username;
-    private String password;
-    private String role;
-    private String company;
+    private String username;    //用户名
+    private String password;    //用户密码
+    private String role;        //职能，注册中介是BROKER，注册普通交易用户是TRADER
+    private String company;     //用户公司名，用于显示在网页上
 
     @Id
     @Column(name = "id", nullable = false)
