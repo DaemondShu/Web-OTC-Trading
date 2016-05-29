@@ -1,5 +1,6 @@
 package data;
 
+import entity.Order;
 import entity.User;
 
 import javax.annotation.Resource;
@@ -31,9 +32,6 @@ public class DataManagerBean implements DataManager
         ADMIN, BROKER, TRADER
     }
 
-    @Resource
-    private SessionContext context;
-
 
     @PersistenceContext(unitName = "JPADB")
     private EntityManager entityManager;
@@ -43,18 +41,36 @@ public class DataManagerBean implements DataManager
 
     }
 
+    @Override
     public User getUser(String name)
     {
-        Query query = entityManager.createQuery("select u from User u where u.username=:username");
-        query.setParameter("username",name);
-        return (User)query.getSingleResult();
+        try
+        {
+            Query query = entityManager.createQuery("select u from User u where u.username=:username");
+            query.setParameter("username",name);
+            return (User)query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
     }
 
-
-    public void SaveUser(User user) throws Exception
+    public void saveUser(User user)
     {
         //throw new EJBException("tian na");
         entityManager.persist(user);
+    }
+
+    public void saveOrder(Order order)
+    {
+        entityManager.persist(order);
+    }
+
+    public void flush()
+    {
+        entityManager.flush();
     }
 
 
