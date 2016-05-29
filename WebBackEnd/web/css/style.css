@@ -294,11 +294,11 @@ margin:0 auto;
 }
 .nbs-flexisel-nav-left {
   	left: -3em;
-	background: url(../images/LR.png) 0px 0px no-repeat;
+	background:  0px 0px no-repeat;
 }
 .nbs-flexisel-nav-right {
 	right: -3em;
-	background: url(../images/LR.png) -21px 0px no-repeat;
+	background: -21px 0px no-repeat;
 }
 /*-----*/
 /*-- caption-css --*/
@@ -307,7 +307,6 @@ margin:0 auto;
 }
 .g1:hover div.caption{
 	display:block;
-	transform:;
 }
 .caption{
 	position: absolute;
@@ -326,7 +325,7 @@ margin:0 auto;
 	display:none;
 }
 .caption span{
-background:url(../images/plus.png) no-repeat;
+background: no-repeat;
 width:22px;
 height:22px;
 display:inline-block;
@@ -386,7 +385,7 @@ float: right;
 width: 13%;
 }
 .social span{
-background: url(../images/social.png) no-repeat 0px 0px;
+background: no-repeat 0px 0px;
 width: 32px;
 height: 35px;
 display:inline-block;
@@ -725,7 +724,7 @@ display:inline-block;
 font-weight:600;
 }
 .product p span{
-background:url(../images/tralle.png) no-repeat 0px 0px;
+background:no-repeat 0px 0px;
 width:15px;
 height:15px;
 display:inline-block;
@@ -777,7 +776,7 @@ vertical-align:middle;
   text-decoration: none;
   height: 28px;
   width: 21px;
-  background: transparent url("../images/LR.png") no-repeat left top;
+  background: transparent  no-repeat left top;
   }
 .callbacks_nav.next {
   left: auto;
@@ -1069,8 +1068,7 @@ color:#5d5959;
 }
 .reg form input[type="submit"]{
 width:80%;
-margin:0 auto;
-display:block;
+	display:block;
 padding: 10px;
 font-size: 1.2em;
 font-weight: 400;
@@ -1078,7 +1076,7 @@ border:none;
 color:#fff;
 border-radius:5px;
 outline: none;
-background:background: rgb(119,119,119);
+background: rgb(119,119,119);
 background: -moz-linear-gradient(top,  rgba(119,119,119,1) 0%, rgba(2,2,2,1) 100%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(119,119,119,1)), color-stop(100%,rgba(2,2,2,1)));
 background: -webkit-linear-gradient(top,  rgba(119,119,119,1) 0%,rgba(2,2,2,1) 100%);
@@ -1086,7 +1084,7 @@ background: -o-linear-gradient(top,  rgba(119,119,119,1) 0%,rgba(2,2,2,1) 100%);
 background: -ms-linear-gradient(top,  rgba(119,119,119,1) 0%,rgba(2,2,2,1) 100%);
 background: linear-gradient(to bottom,  rgba(119,119,119,1) 0%,rgba(2,2,2,1) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777777', endColorstr='#020202',GradientType=0 );
-margin-top:1em;
+	margin: 1em auto 0;
 }
 p.click{
 color: #A7A7A7;
@@ -1156,7 +1154,7 @@ border:none;
 color:#fff;
 border-radius:5px;
 outline: none;
-background:background: rgb(119,119,119);
+background: rgb(119,119,119);
 background: -moz-linear-gradient(top,  rgba(119,119,119,1) 0%, rgba(2,2,2,1) 100%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(119,119,119,1)), color-stop(100%,rgba(2,2,2,1)));
 background: -webkit-linear-gradient(top,  rgba(119,119,119,1) 0%,rgba(2,2,2,1) 100%);
@@ -1212,7 +1210,6 @@ background: #efefef;
 padding:6% 0;
 }
 .cart-list li {
-list-style-image: url(../images/icon2.png);
 margin-left: 20px;
 margin-bottom: 10px;
 }
@@ -1803,7 +1800,7 @@ width: 100%;
 .log form input[type="text"], .log form input[type="password"] {
 width: 100%;
 padding: 7px;
-font-size: 0.9m;
+font-size: 0.9em;
 }
 .log {
 margin: 2em 0 3em 0;
@@ -2186,10 +2183,10 @@ font-size: 0.85em;
 .order
 {
 	position:absolute;
-	left:460px;
-	top:150px;
+	left:25%;
+	top:20%;
 	background:#dedede;
-	width:60%;
+	width:50%;
 	height:500px;
 	border:3px solid #444;
 	border-radius:7px;

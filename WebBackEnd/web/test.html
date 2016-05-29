@@ -23,6 +23,13 @@
     <button onclick="testReg();"> testReg</button>
 </div>
 
+<div class="testOrder">
+    <button onclick="testCreateOrder();"> testCreateOrder</button>
+
+
+</div>
+
+
 </body>
 
 <script>
@@ -37,15 +44,22 @@
 
     function testReg()
     {
-
+        //登陆时候的两个密码重复的检查在前端做，传给后端的话直接一个json对象就好
         ajax("User","get", {
             action : "register",
             userData : JSON.stringify({
                 username : "tempuser",
                 company : "M",
                 password : "temppwd",
-                role : "BROKE"
+                role : "BROKER"
             })
         });
     }
+
+    function testCreateOrder()
+    {
+
+    }
+
+
 </script>

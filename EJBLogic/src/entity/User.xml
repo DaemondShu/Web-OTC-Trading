@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="entity.User">
+        <table name="user" schema="otc" />
+        <attributes>
+            <id name="id">
+                <column name="id" precision="11"/>
+            </id>
+            <basic name="username">
+                <column name="username" length="45"/>
+            </basic>
+            <basic name="password">
+                <column name="password" length="45"/>
+            </basic>
+            <basic name="role">
+                <column name="role" length="45"/>
+            </basic>
+            <basic name="company">
+                <column name="company" length="45"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

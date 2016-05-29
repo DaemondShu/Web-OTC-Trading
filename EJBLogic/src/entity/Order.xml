@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="entity.Order">
+        <table name="order" schema="otc" />
+        <attributes>
+            <id name="id">
+                <column name="id" precision="11"/>
+            </id>
+            <basic name="isSell">
+                <column name="isSell" precision="1"/>
+            </basic>
+            <basic name="status">
+                <column name="status" length="45"/>
+            </basic>
+            <basic name="type">
+                <column name="type" length="45"/>
+            </basic>
+            <basic name="time">
+                <column name="time" nullable="false" length="45"/>
+            </basic>
+            <basic name="condition">
+                <column name="condition" nullable="false" length="45"/>
+            </basic>
+            <basic name="expectedVol">
+                <column name="expectedVol" nullable="false" precision="11"/>
+            </basic>
+            <basic name="surplusVol">
+                <column name="surplusVol" precision="11"/>
+            </basic>
+            <basic name="price">
+                <column name="price" nullable="false" precision="-1"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

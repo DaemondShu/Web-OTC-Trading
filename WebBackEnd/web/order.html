@@ -173,22 +173,48 @@
     <div class="clearfix"></div>
 </div>
 <div class="order">
-    <div class="col-md-12 reg-form">
+    <div class="col-md-11 reg-form">
         <div class="reg">
 
             <form>
                 <ul>
                     <li class="text-info">Buy/Sell:</li>
                     <li><input type="text" value=""></li>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="isSell"
+                               value=1 checked> Sell
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="isSell"
+                               value=0 > LIMIT
+                    </label>
                 </ul>
+
+                <ul>
+                    <li class="text-info">Type:</li>
+                    <!--<li><input type="text" value=""></li>-->
+                    <label class="checkbox-inline">
+                        <input type="radio" name="type"
+                               value="MARKET" checked> MARKET
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="type"
+                               value="LIMIT" > LIMIT
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="type"
+                               value="STOP"> STOP
+                    </label>
+
+                </ul>
+
                 <ul>
                     <li class="text-info">Product:</li>
                     <li><input type="text" value=""></li>
                 </ul>
-                <ul>
-                    <li class="text-info">Type:</li>
-                    <li><input type="text" value=""></li>
-                </ul>
+
+
+
                 <ul>
                     <li class="text-info">Price:</li>
                     <li><input type="text" value=""></li>
@@ -199,10 +225,6 @@
                 </ul>
                 <ul>
                     <li class="text-info">Quantity:</li>
-                    <li><input type="text" value=""></li>
-                </ul>
-                <ul>
-                    <li class="text-info">Date:</li>
                     <li><input type="text" value=""></li>
                 </ul>
 
