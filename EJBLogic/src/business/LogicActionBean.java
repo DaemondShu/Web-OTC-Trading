@@ -7,8 +7,6 @@ import net.sf.json.JSONObject;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -26,13 +24,13 @@ public class LogicActionBean implements LogicAction
     }
 
 
-
+    @Override
     /**
      * 创建一个订单，成功返回null，失败返回错误信息
      * @param data
      * @return
      */
-    @Override
+
     public boolean createOrder(String data)
     {
         try
@@ -54,6 +52,23 @@ public class LogicActionBean implements LogicAction
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean cancelOrder(int orderId)
+    {
+        try
+        {
+            Order order = dataManager.getOrder(orderId);
+            order.setStatus("CANCEL");
+            dataManager.flush();
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     /**
@@ -80,7 +95,7 @@ public class LogicActionBean implements LogicAction
         Map<String,Object> pfilter = new TreeMap<>();
         if (productId >=0)
             pfilter.put("id",productId);
-        List<Product> products = dataManager.getProduct(pfilter);
+        List<Product> products = dataManager.superQuery(Product.class,pfilter);
 
         for ( Product product: products )
         {
@@ -99,12 +114,6 @@ public class LogicActionBean implements LogicAction
         return result;
     }
 
-
-    @Override
-    public boolean cancelOrder()
-    {
-        return false;
-    }
 
 
 }

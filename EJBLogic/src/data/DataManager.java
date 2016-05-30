@@ -5,8 +5,10 @@ import entity.Product;
 import entity.User;
 
 import javax.ejb.Local;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by monkey_d_asce on 16-5-28.
@@ -23,7 +25,23 @@ public interface DataManager
 
     void flush();
 
-    List<Product> getProductList();
+//    List<Product> getProducts();
+//
+//    List<Product> getProducts(Map<String,Object> filter);
+//
+//    List<Product> getProducts(Set<Map.Entry<String,Object>> filter);
+//
+//    List<Order> getOrders();
+//
+//    List<Order> getOrders(Map<String,Object> filter);
+//
+//    List<Order> getOrders(Set<Map.Entry<String,Object>> filter);
 
-    List<Product> getProduct(Map<String,Object> filter);
+    <E extends Serializable> List<E> superQuery(Class table, Set<Map.Entry<String,Object>> filter);
+
+    <E extends Serializable> List<E> superQuery(Class table);
+
+    <E extends Serializable> List<E> superQuery(Class table, Map<String,Object> filter);
+
+    Order getOrder(int orderId);
 }

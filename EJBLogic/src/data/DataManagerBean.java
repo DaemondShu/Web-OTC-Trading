@@ -7,9 +7,11 @@ import entity.User;
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
+import javax.persistence.Version;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by monkey_d_asce on 16-5-27.
@@ -40,6 +42,14 @@ public class DataManagerBean implements DataManager
     @EJB
     private SuperJPA dao;
 
+    private void  filter2Query(Set<Map.Entry<String,Object>> filter,SuperQuery query)
+    {
+        for (Map.Entry<String,Object> item : filter)
+        {
+            query.eq(item.getKey(),item.getValue());
+        }
+    }
+
     public DataManagerBean()
     {
 
@@ -58,10 +68,22 @@ public class DataManagerBean implements DataManager
         {
             return null;
         }
-
     }
 
 
+    public Order getOrder(int orderId)
+    {
+        return dao.get(Order.class,orderId);
+    }
+
+    @Override
+    public void saveOrder(Order order)
+    {
+        dao.insert(order);
+        //entityManager.persist(order);
+    }
+
+    @Override
     public void saveUser(User user)
     {
         //throw new EJBException("tian na");
@@ -69,43 +91,22 @@ public class DataManagerBean implements DataManager
         entityManager.persist(user);
     }
 
-    public List<Product> getProductList()
+    public <E extends Serializable> List<E> superQuery(Class table)
     {
         SuperQuery query = SuperQuery.forClass(Product.class,entityManager);
-        List<Product> result = dao.query(query);
-        return result;
+        return dao.query(query);
     }
 
-    public List<Product> getProduct(Map<String,Object> filter)
+    public <E extends Serializable> List<E> superQuery(Class table, Map<String,Object> filter)
+    {
+        return superQuery(table,filter.entrySet());
+    }
+
+    public <E extends Serializable> List<E> superQuery(Class table, Set<Map.Entry<String,Object>> filter)
     {
         SuperQuery query = SuperQuery.forClass(Product.class,entityManager);
-
-        for (Map.Entry<String,Object> item : filter.entrySet() )
-        {
-            query.eq(item.getKey(),item.getValue());
-        }
-
-        List<Product> result = dao.query(query);
-
-        return result;
-    }
-
-
-
-    public void saveOrder(Order order)
-    {
-        dao.insert(order);
-        //entityManager.persist(order);
-    }
-
-    public void getOrderList()
-    {
-
-    }
-
-    public void getMarketPrice(int productId)
-    {
-
+        filter2Query(filter,query);
+        return dao.query(query);
     }
 
 

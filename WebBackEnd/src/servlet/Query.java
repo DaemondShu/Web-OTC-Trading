@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 public class Query extends HttpServlet
 {
     private static final String ACTION = "action";
+    private static final String FILTER = "filter";
     private static final int ERRORCODE = 520;
 
     private HttpServletRequest request;
@@ -35,22 +36,30 @@ public class Query extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         this.request = request;
-        request.getSession(true);
+        //request.getSession(true);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/plain");
         PrintWriter writer = response.getWriter();
         try
         {
+           // String filterStr =
+
             switch (val(ACTION))
             {
                 case "productList":
-                    writer.print(queryAction.productList(""));
+                    writer.print(queryAction.productList(val(FILTER)));
                     break;
                 case "orderList":
+                    writer.print(queryAction.orderList(val(FILTER)));
+                    break;
+                case "tradeList":
+                    writer.print(queryAction.tradeList(val(FILTER)));
+                    break;
+                case "userList":
+                    writer.print(queryAction.userList(val(FILTER)));
                     break;
 
-                case "tradeList":
-                    break;
+                //为什么没有用户查询？ 因为查询是直接返回一个列表，会包含数据的所有数据，会出事
 
                 default:
                     throw new LogicException("invalid action");

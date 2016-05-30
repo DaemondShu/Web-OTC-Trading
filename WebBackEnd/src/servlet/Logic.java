@@ -21,6 +21,7 @@ public class Logic extends HttpServlet
     private static final String ACTION = "action";
     private static final String ORDERDATA = "orderData";
     private static final String FILTER = "filter";
+    private static final String ORDERID= "orderId";
     private static final int ERRORCODE = 520;
 
     @EJB
@@ -39,7 +40,7 @@ public class Logic extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         this.request = request;
-        request.getSession(true);
+        //request.getSession(true);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/plain");
         PrintWriter writer = response.getWriter();
@@ -51,14 +52,16 @@ public class Logic extends HttpServlet
                     if (!logicAction.createOrder(val(ORDERDATA)))
                         throw new LogicException("create order failed");
                     break;
-                case "cancel":
+                case "cancelOrder":
+                    if (!logicAction.cancelOrder(Integer.parseInt(val(ORDERID))))
+                        throw new LogicException("cancel order failed");
                     break;
 
                 case "view":
                     break;
 
                 case "doTrade":
-                    logicAction.doTrade(3);
+                    logicAction.doTrade(-1);
                     break;
 
                 default:

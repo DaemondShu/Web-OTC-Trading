@@ -5,12 +5,21 @@ package business;
  */
 public interface LogicAction
 {
+
     boolean createOrder(String data);
 
-    boolean cancelOrder();
+
+    boolean cancelOrder(int orderId);
 
     int doTrade();
 
 
     int doTrade(int productId);
+
+    //    int doTrade();
+//
+//
+//    int doTrade(int productId);
+//
+//    boolean cancelOrder(int orderId);
 }

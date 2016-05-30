@@ -1,12 +1,15 @@
 package business;
 
 import data.DataManager;
+import entity.Order;
+import entity.Product;
+import entity.Trade;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
-import javax.persistence.Query;
+
 
 /**
  * Created by monkey_d_asce on 16-5-29.
@@ -21,21 +24,40 @@ public class QueryActionBean implements QueryAction
     {
     }
 
-    /**
-     * 返回符合条件的Order的json数组字符串，
-     * @return
-     */
-    public String QueryOrder(String filter)
+    @Override
+    public String orderList(String filter)
     {
-
-        return "[]";
-    }
-
-
-    public String productList(String filter)
-    {
-        JSONArray jsonArray = JSONArray.fromObject(dataManager.getProductList());
+        JSONObject filterJson = JSONObject.fromObject(filter);
+        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Order.class,filterJson.entrySet()));
         return jsonArray.toString();
     }
+
+
+    @Override
+    public String productList(String filter)
+    {
+
+
+        JSONObject filterJson = JSONObject.fromObject(filter);
+        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Product.class,filterJson.entrySet()));
+        return jsonArray.toString();
+    }
+
+    @Override
+    public String tradeList(String filter)
+    {
+        JSONObject filterJson = JSONObject.fromObject(filter);
+        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Trade.class,filterJson.entrySet()));
+        return jsonArray.toString();
+    }
+
+    @Override
+    public String userList(String filter)
+    {
+        JSONObject filterJson = JSONObject.fromObject(filter);
+        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Trade.class,filterJson.entrySet()));
+        return jsonArray.toString();
+    }
+
 
 }

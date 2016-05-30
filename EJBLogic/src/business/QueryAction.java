@@ -5,11 +5,12 @@ package business;
  */
 public interface QueryAction
 {
-    /**
-     * 返回符合条件的Order的json数组字符串，
-     * @return
-     */
-    String QueryOrder(String filter);
+
+    String orderList(String filter);
 
     String productList(String filter);
+
+    String tradeList(String filter);
+
+    String userList(String filter);
 }

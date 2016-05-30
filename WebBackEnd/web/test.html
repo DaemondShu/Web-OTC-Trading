@@ -35,6 +35,7 @@
 </body>
 
 <script>
+    //------------------------------------ 用户操作 -----------------------------
     function testLogin()
     {
         ajax("User", "get", {
@@ -58,13 +59,16 @@
         });
     }
 
+    //-------------------------------------业务逻辑------------------------------
+
+
     function testCreateOrder()
     {
         ajax("Logic","post", {
             action : "createOrder",
             orderData : JSON.stringify({
                 productId: 1,
-                userId: 3,          //订单发起人id
+                userId: 4,          //订单发起人id
                 brokerId: 2,       //中介id
                 isSell:true,      //买还是卖
                 status: "TODO",   //需要执行
@@ -76,7 +80,12 @@
             })
         })
     }
-    
+
+    function testCancelOrder()
+    {
+        ajax("Logic","")
+    }
+
     function testDoTrade()
     {
         ajax("Logic","post", {
@@ -84,11 +93,17 @@
         })
     }
 
+    //---------------------------------------------查询操作-------------------------
+    // 查询操作为了方便筛选，提供一个filter参数，key就是属性名，值是要求。比如 kind:"Energy"就是找出所有类型是kind的productlist。
+    // 对于product，会多一个市场价的属性。
+
     function testQueryProductList()
     {
         ajax("Query","get",{
             action: "productList",
-            filter: JSON.stringify({
+            filter: JSON.stringify({    //查询操作的filter都是一个筛选器，一般属性必须和filter里的参数一模一样的才能获得
+                kind : "Energy",
+                //id: 2               //查询之后，对于整数型参数，也可以为字符串型，我写了处理，后台能够自动把字符串转成整数。
 
             })
         })

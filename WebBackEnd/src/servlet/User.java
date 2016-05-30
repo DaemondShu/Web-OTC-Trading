@@ -39,7 +39,7 @@ public class User extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         this.request = request;
-        request.getSession(true);
+        //request.getSession(true);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/plain");
         PrintWriter writer = response.getWriter();
