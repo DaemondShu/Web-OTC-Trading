@@ -87,6 +87,12 @@ public class Logic extends HttpServlet
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/plain");
+        PrintWriter writer = response.getWriter();
         response.setStatus(404);
+        writer.print("GET not supported");
+        writer.flush();
+        writer.close();
     }
 }

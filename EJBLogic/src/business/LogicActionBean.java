@@ -1,5 +1,6 @@
 package business;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.*;
 import data.DataManager;
 import entity.Order;
 import entity.Product;
@@ -8,6 +9,7 @@ import net.sf.json.JSONObject;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.*;
+import java.util.List;
 
 /**
  * 处理会修改数据的订单操作，比如交易
@@ -86,34 +88,64 @@ public class LogicActionBean implements LogicAction
      * @return  完成了几个交易
      */
     @Override
-    public int doTrade(int productId)
+    public int doTrade(final int productId)
     {
 
         int result = 0;
         //枚举所有物品,得到目前某个商品的市场价，按商品做循环
 
-        Map<String,Object> pfilter = new TreeMap<>();
-        if (productId >=0)
-            pfilter.put("id",productId);
-        List<Product> products = dataManager.superQuery(Product.class,pfilter);
+        Map<String, Object> pfilter = new HashMap<>();
+        Map<String, Object> ofilter = new HashMap<>();
+        if (productId >= 0)
+            pfilter.put("id", productId);
+        List<Product> products = dataManager.superQuery(Product.class, pfilter);
 
-        for ( Product product: products )
+        for (Product product : products)
         {
             System.out.println(product.toString());
+            ofilter.put("productId",product.getId());
 
+            //'TODO' -> DOING
+
+
+            List<Order> orders = dataManager.superQuery(Order.class,ofilter);
+
+            //
 
 
             //先要拿到所有todo的订单，看一下状态
-
         }
-
-
-
-
 
         return result;
     }
 
+    /**
+     * 得到目前的市场最低价，
+     * @param productId 产品id
+     * @return
+     */
+    public Double getMarketPrice(final int productId)
+    {
+        final Map<String, Object> ofilter = new HashMap<String, Object>(){{
+            this.put("productId",productId);
+            this.put("status","DOING");
+            this.put("sort","price");
+            this.put("isSell",1);
+        }};
 
+        List<Order> orders = dataManager.superQuery(Order.class,ofilter);
+
+        for (Order order: orders )
+        {
+            return order.getPrice();
+        }
+
+
+        return null;
+    }
+
+
+
+   // private boolean checkTodo
 
 }

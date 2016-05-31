@@ -3,6 +3,7 @@ package data;
 import entity.Order;
 import entity.Product;
 import entity.User;
+import net.sf.json.JSONArray;
 
 import javax.ejb.*;
 import javax.persistence.EntityManager;
@@ -46,7 +47,22 @@ public class DataManagerBean implements DataManager
     {
         for (Map.Entry<String,Object> item : filter)
         {
-            query.eq(item.getKey(),item.getValue());
+            String key = item.getKey();
+            Object value = item.getValue();
+            if (value instanceof List)
+            {
+                List<String> advCondition = (List<String>) value;
+                switch (advCondition.get(0))
+                {
+                    case "sort":
+                        query.addOrder(key,advCondition.get(1));
+                        break;
+                    default:
+                        System.out.println("found a bad filter");
+                }
+            }
+            else
+                query.eq(key,value);
         }
     }
 
@@ -93,7 +109,7 @@ public class DataManagerBean implements DataManager
 
     public <E extends Serializable> List<E> superQuery(Class table)
     {
-        SuperQuery query = SuperQuery.forClass(Product.class,entityManager);
+        SuperQuery query = SuperQuery.forClass(table,entityManager);
         return dao.query(query);
     }
 
@@ -104,7 +120,7 @@ public class DataManagerBean implements DataManager
 
     public <E extends Serializable> List<E> superQuery(Class table, Set<Map.Entry<String,Object>> filter)
     {
-        SuperQuery query = SuperQuery.forClass(Product.class,entityManager);
+        SuperQuery query = SuperQuery.forClass(table,entityManager);
         filter2Query(filter,query);
         return dao.query(query);
     }

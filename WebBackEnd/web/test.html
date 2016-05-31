@@ -25,11 +25,14 @@
 
 <div class="testLogic">
     <button onclick="testCreateOrder();"> testCreateOrder</button>
+    <button onclick="testCancelOrder()"> testCancelOrder</button>
     <button onclick="testDoTrade();"> testDoTrade</button>
 </div>
 
 <div>
     <button onclick="testQueryProductList();"> testQueryProductList</button>
+    <button onclick="testQueryUserList()"> testQueryUserList</button>
+    <button onclick="testQueryOrderList()"> testQueryOrderList</button>
 </div>
 
 </body>
@@ -83,7 +86,10 @@
 
     function testCancelOrder()
     {
-        ajax("Logic","")
+        ajax("Logic","post",{
+            action : "cancelOrder",
+            orderId: 10,
+        })
     }
 
     function testDoTrade()
@@ -105,6 +111,28 @@
                 kind : "Energy",
                 //id: 2               //查询之后，对于整数型参数，也可以为字符串型，我写了处理，后台能够自动把字符串转成整数。
 
+            })
+        })
+    }
+
+
+    // 查询方法是无法获得密码的
+    function testQueryUserList()
+    {
+        ajax("Query","get",{
+            action: "userList",
+            filter: JSON.stringify({
+                id: 2
+            })
+        })
+    }
+
+    function testQueryOrderList()
+    {
+        ajax("Query","get",{
+            action: "orderList",
+            filter: JSON.stringify({
+                "price": ["sort","asc"]    //按asc价格升序返回，desc按降序返回
             })
         })
     }
