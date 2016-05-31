@@ -1,9 +1,9 @@
 package data;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.metamodel.EntityType;
 import java.io.Serializable;
 import java.util.List;
@@ -367,6 +367,13 @@ public class SuperJPA
      */
     public <E extends Serializable> List<E> query(SuperQuery query)
     {
-        return entityManager.createQuery(query.newCriteriaQuery()).getResultList();
+        Query jpaQuery = entityManager.createQuery(query.newCriteriaQuery());
+        if (query.getStartNum()!=null)
+            jpaQuery.setFirstResult(query.getStartNum());
+        if (query.getMaxNum()!=null)
+            jpaQuery.setMaxResults(query.getMaxNum());
+
+
+        return jpaQuery.getResultList();
     }
 }

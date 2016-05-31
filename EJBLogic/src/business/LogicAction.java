@@ -13,7 +13,6 @@ public interface LogicAction
 
     int doTrade();
 
-
     int doTrade(int productId);
 
     //    int doTrade();

@@ -10,9 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by monkey_d_asce on 16-5-27.
@@ -48,21 +46,22 @@ public class DataManagerBean implements DataManager
         for (Map.Entry<String,Object> item : filter)
         {
             String key = item.getKey();
-            Object value = item.getValue();
-            if (value instanceof List)
+            switch (key)
             {
-                List<String> advCondition = (List<String>) value;
-                switch (advCondition.get(0))
-                {
-                    case "sort":
-                        query.addOrder(key,advCondition.get(1));
-                        break;
-                    default:
-                        System.out.println("found a bad filter");
-                }
+                case "sort" :
+                    List<String> advCond = (List<String>) item.getValue();
+                    query.addOrder(advCond.get(0),advCond.get(1));
+                    break;
+                case "maxNum":
+                    query.setMaxNum((Integer) item.getValue());
+                    break;
+                case "startNum":
+                    query.setStartNum((Integer) item.getValue());
+                    break;
+                default:
+                    query.eq(key,item.getValue());
             }
-            else
-                query.eq(key,value);
+
         }
     }
 
@@ -106,6 +105,27 @@ public class DataManagerBean implements DataManager
 
         entityManager.persist(user);
     }
+
+    public Double getMarketPrice(final int productId)
+    {
+        final Map<String, Object> ofilter = new HashMap<String, Object>(){{
+            this.put("productId",productId);
+            this.put("status","DOING");
+            this.put("sort", Arrays.asList("price","asc"));
+            this.put("isSell",1);
+            this.put("maxNum",1);
+        }};
+
+
+        List<Order> orders = this.superQuery(Order.class,ofilter);
+
+        for (Order order: orders )
+        {
+            return order.getPrice();
+        }
+        return -1.0;
+    }
+
 
     public <E extends Serializable> List<E> superQuery(Class table)
     {

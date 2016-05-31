@@ -64,7 +64,8 @@
 
     //-------------------------------------业务逻辑------------------------------
 
-
+    //TODO 之后要向老师问一下这个LIMIT和STOP实时性的问题，市场订单和购买订单直接进入执行状态,对于卖操作如果条件成立就一直卖，中途不符合价格了会不会继续回到doing。buy订单应该永远是doing。
+    //订单一共四种状态（TODO：需要执行，DOING：正在执行，DONE：已经完成）
     function testCreateOrder()
     {
         ajax("Logic","post", {
@@ -73,10 +74,11 @@
                 productId: 1,
                 userId: 4,          //订单发起人id
                 brokerId: 2,       //中介id
-                isSell:true,      //买还是卖
-                status: "TODO",   //需要执行
+                isSell:1,      //买还是卖，不要用true和false，1表示卖，0表示买
+               // status: "TODO",   //需要执行,订单一共四种状态（TODO：需要执行，DOING：正在执行，DONE：已经完成）
                 type: "MARKET",   //订单类型，三种：MARKET，LIMIT(优于当前市场价时购买/交易)，STOP(优于用户指定价时购买/交易)
-                condition: ">=1124",  //针对LIMIT和STOP订单的触发条件
+               // condition: "1124,2500", // 针对LIMIT和STOP订单的触发条件, 如果是LIMIT的话要在前端自动填充这个condition,
+                //表示订单的触发条件，逗号分隔的两个舒，表示一旦市价落到这个范围里(1124<=marketPrice<=2500)就触发订单，如果是“1124,”就是表示单向,在market订单里无效，取消注释传上了也无视，
                 expectedVol: 100, //预期交易量
                 price: 100.5 ,  //交易单价
 
@@ -109,7 +111,7 @@
             action: "productList",
             filter: JSON.stringify({    //查询操作的filter都是一个筛选器，一般属性必须和filter里的参数一模一样的才能获得
                 kind : "Energy",
-                //id: 2               //查询之后，对于整数型参数，也可以为字符串型，我写了处理，后台能够自动把字符串转成整数。
+                //id: 2               //查询之后，对于整数型参数，也可以为字符串型，比如写成id:"2"，我写了处理，后台能够自动把字符串转成整数。
 
             })
         })
@@ -127,18 +129,20 @@
         })
     }
 
+
     function testQueryOrderList()
     {
         ajax("Query","get",{
             action: "orderList",
             filter: JSON.stringify({
-                "price": ["sort","asc"]    //按asc价格升序返回，desc按降序返回
+                "sort": ["price","asc"],    //价格按照按asc价格升序返回，desc按降序返回
+                "maxNum": 4,               //最多返回几条数据，如果要做翻页，每页显示有限个，可以集合startNum去使用
+                "startNum":1               //返回从第startNum条开始的数据，为1的话就是跳过第一个
             })
         })
     }
 
-    
-    //不打算让用户输入具体的product名，会有出现大小写冲突的情况。
+
     //broker也是选择的
 
 </script>

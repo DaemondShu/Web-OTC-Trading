@@ -157,6 +157,8 @@ public class Order implements Serializable
     public void setSurplusVol(Integer surplusVol)
     {
         this.surplusVol = surplusVol;
+        if (this.surplusVol == 0)
+            this.status = "DONE";
     }
 
     @Basic
@@ -213,12 +215,24 @@ public class Order implements Serializable
         return result;
     }
 
-    public void init()
+    public void init() throws Exception
     {
+        if (this.expectedVol ==null || this.expectedVol <=0)
+            throw new Exception("bad attributes");
         this.surplusVol = this.expectedVol;
+
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        if (this.type.equals("MARKET"))
+        if (this.type.equals("MARKET")) //市场订单和购买订单直接进入执行状态
+        {
             this.setStatus("DOING");
+            this.setCondition(",");
+        } else if(this.isSell == 0)
+        {
+            this.setStatus("DOING");
+
+        }
+        else
+            this.setStatus("TODO");
     }
 
     @Override

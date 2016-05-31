@@ -42,7 +42,17 @@ public class QueryActionBean implements QueryAction
 
 
         JSONObject filterJson = JSONObject.fromObject(filter);
-        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Product.class,filterJson.entrySet()));
+        List<Product> products = dataManager.superQuery(Product.class,filterJson.entrySet());
+
+        JSONArray jsonArray = new JSONArray();
+        for (Product product: products )
+        {
+            JSONObject temp = JSONObject.fromObject(product);
+            Double marketPrice = dataManager.getMarketPrice(product.getId());
+            temp.put("marketPrice",marketPrice == null ? -1 : marketPrice);
+            jsonArray.add(temp);
+        }
+
         return jsonArray.toString();
     }
 

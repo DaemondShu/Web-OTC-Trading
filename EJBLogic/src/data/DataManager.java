@@ -44,4 +44,6 @@ public interface DataManager
     <E extends Serializable> List<E> superQuery(Class table, Map<String,Object> filter);
 
     Order getOrder(int orderId);
+
+    Double getMarketPrice(final int productId);
 }

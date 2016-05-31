@@ -58,6 +58,10 @@ public class SuperQuery implements Serializable
 
     private String groupBy;
 
+    /** 最大数目 */
+    private Integer maxNum;
+    private Integer startNum;
+
     private SuperQuery() {
     }
 
@@ -335,6 +339,9 @@ public class SuperQuery implements Serializable
             this.orders.add(criteriaBuilder.desc(from.get(propertyName)));
     }
 
+
+
+
     public void setOrder(String propertyName, String order) {
         this.orders = null;
         addOrder(propertyName, order);
@@ -404,4 +411,23 @@ public class SuperQuery implements Serializable
         this.groupBy = groupBy;
     }
 
+    public Integer getMaxNum()
+    {
+        return maxNum;
+    }
+
+    public void setMaxNum(Integer maxNum)
+    {
+        this.maxNum = maxNum;
+    }
+
+    public Integer getStartNum()
+    {
+        return startNum;
+    }
+
+    public void setStartNum(Integer startNum)
+    {
+        this.startNum = startNum;
+    }
 }
