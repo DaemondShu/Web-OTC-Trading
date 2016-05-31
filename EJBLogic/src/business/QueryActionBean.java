@@ -49,7 +49,9 @@ public class QueryActionBean implements QueryAction
         {
             JSONObject temp = JSONObject.fromObject(product);
             Double marketPrice = dataManager.getMarketPrice(product.getId());
+            String BrokerCompany = dataManager.getUser(product.getBrokerId()).getCompany();
             temp.put("marketPrice",marketPrice == null ? -1 : marketPrice);
+            temp.put("broker",BrokerCompany);
             jsonArray.add(temp);
         }
 

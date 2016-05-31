@@ -14,9 +14,6 @@
             <basic name="userId">
                 <column name="userId" nullable="false" precision="11"/>
             </basic>
-            <basic name="brokerId">
-                <column name="brokerId" nullable="false" precision="11"/>
-            </basic>
             <basic name="isSell">
                 <column name="isSell" nullable="false" precision="1"/>
             </basic>

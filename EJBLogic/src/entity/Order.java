@@ -17,7 +17,6 @@ public class Order implements Serializable
     private int id;
     private Integer productId;
     private Integer userId;
-    private Integer brokerId;
     private Byte isSell;
     private String status;
     private String type;
@@ -61,18 +60,6 @@ public class Order implements Serializable
     public void setUserId(Integer userId)
     {
         this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "brokerId", nullable = true)
-    public Integer getBrokerId()
-    {
-        return brokerId;
-    }
-
-    public void setBrokerId(Integer brokerId)
-    {
-        this.brokerId = brokerId;
     }
 
     @Basic
@@ -184,7 +171,6 @@ public class Order implements Serializable
         if (id != order.id) return false;
         if (productId != null ? !productId.equals(order.productId) : order.productId != null) return false;
         if (userId != null ? !userId.equals(order.userId) : order.userId != null) return false;
-        if (brokerId != null ? !brokerId.equals(order.brokerId) : order.brokerId != null) return false;
         if (isSell != null ? !isSell.equals(order.isSell) : order.isSell != null) return false;
         if (status != null ? !status.equals(order.status) : order.status != null) return false;
         if (type != null ? !type.equals(order.type) : order.type != null) return false;
@@ -203,7 +189,6 @@ public class Order implements Serializable
         int result = id;
         result = 31 * result + (productId != null ? productId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (brokerId != null ? brokerId.hashCode() : 0);
         result = 31 * result + (isSell != null ? isSell.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
@@ -242,7 +227,6 @@ public class Order implements Serializable
                 "id=" + id +
                 ", productId=" + productId +
                 ", userId=" + userId +
-                ", brokerId=" + brokerId +
                 ", isSell=" + isSell +
                 ", status='" + status + '\'' +
                 ", type='" + type + '\'' +

@@ -2,6 +2,7 @@ package data;
 
 import entity.Order;
 import entity.Product;
+import entity.Trade;
 import entity.User;
 import net.sf.json.JSONArray;
 
@@ -85,6 +86,18 @@ public class DataManagerBean implements DataManager
         }
     }
 
+    public User getUser(int id)
+    {
+        try
+        {
+            return (User)entityManager.find(User.class,id);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
 
     public Order getOrder(int orderId)
     {
@@ -98,12 +111,33 @@ public class DataManagerBean implements DataManager
         //entityManager.persist(order);
     }
 
+    public void updateOrder(Order order)
+    {
+        dao.update(order);
+    }
+
     @Override
     public void saveUser(User user)
     {
         //throw new EJBException("tian na");
 
         entityManager.persist(user);
+    }
+
+    @Override
+    public void saveTrade(Trade trade)
+    {
+
+
+
+        entityManager.persist(trade);
+
+
+        entityManager.flush();
+       // entityManager.clear();
+        //entityManager.refresh(trade);
+
+        //entityManager.persist(trade);
     }
 
     public Double getMarketPrice(final int productId)

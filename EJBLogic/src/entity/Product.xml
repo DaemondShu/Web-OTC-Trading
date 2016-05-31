@@ -14,6 +14,9 @@
             <basic name="kind">
                 <column name="kind" length="45"/>
             </basic>
+            <basic name="brokerId">
+                <column name="brokerId" nullable="false" precision="11"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

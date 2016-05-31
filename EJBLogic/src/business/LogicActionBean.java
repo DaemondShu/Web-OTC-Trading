@@ -11,6 +11,8 @@ import sun.security.util.Resources_it;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.swing.text.html.parser.Entity;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -114,7 +116,12 @@ public class LogicActionBean implements LogicAction
             {
 
                 //Sell 'TOD' -> 'DOING'
-                updateTodoOrder(product.getId());
+                int count = updateTodoOrder(product.getId())+updateDoingOrder(product.getId());
+
+                while (count >0)
+                {
+                    count = updateTodoOrder(product.getId())+updateDoingOrder(product.getId());
+                }
                 //do Trade in DOING
 
                 //
@@ -158,7 +165,7 @@ public class LogicActionBean implements LogicAction
             else
             {
                 double[] conditions = getMinMax(order.getCondition());
-                System.out.println(order.getPrice());
+                //System.out.println(order.getPrice());
                 if (conditions[0] <= marketPrice  && marketPrice <= conditions[1])
                 {
                     order.setStatus("DOING");
@@ -228,13 +235,22 @@ public class LogicActionBean implements LogicAction
             Integer sellVol = sellOrder.getSurplusVol();
             Integer buyVol = buyOrder.getSurplusVol();
             int quantity = min(sellVol,buyVol);
+            //sellVol -= quantity;
+            //sellOrder -= quantity;
             sellOrder.setSurplusVol(sellVol - quantity);
             buyOrder.setSurplusVol(buyVol-quantity);
 
+            dataManager.updateOrder(sellOrder);
+            dataManager.updateOrder(buyOrder);
+
             Trade trade = new Trade();
+            trade.init(buyOrder.getId(),sellOrder.getId(),quantity);
+           // trade.setId(6);
+            dataManager.saveTrade(trade);
 
+            System.out.println("4455556666");
 
-
+            //dataManager.flush();
             return true;
         }
         catch (Exception e)

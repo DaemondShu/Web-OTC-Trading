@@ -2,6 +2,7 @@ package data;
 
 import entity.Order;
 import entity.Product;
+import entity.Trade;
 import entity.User;
 
 import javax.ejb.Local;
@@ -46,4 +47,10 @@ public interface DataManager
     Order getOrder(int orderId);
 
     Double getMarketPrice(final int productId);
+
+    void saveTrade(Trade trade);
+
+    User getUser(int id);
+
+    void updateOrder(Order order);
 }

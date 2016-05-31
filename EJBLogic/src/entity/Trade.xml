@@ -7,7 +7,14 @@
         <attributes>
             <id name="id">
                 <column name="id" precision="11"/>
+
             </id>
+            <basic name="buyOrderId">
+                <column name="buyOrderId" nullable="false" precision="11"/>
+            </basic>
+            <basic name="sellOrderId">
+                <column name="sellOrderId" nullable="false" precision="11"/>
+            </basic>
             <basic name="time">
                 <column name="time" length="45"/>
             </basic>

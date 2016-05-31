@@ -1,9 +1,6 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,6 +11,7 @@ public class Product implements Serializable
 {
     private int id;
     private String name;
+    private int brokerId;
 
     @Override
     public String toString()
@@ -85,5 +83,18 @@ public class Product implements Serializable
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (kind != null ? kind.hashCode() : 0);
         return result;
+    }
+
+
+
+    @Basic
+    public int getBrokerId()
+    {
+        return brokerId;
+    }
+
+    public void setBrokerId(int brokerId)
+    {
+        this.brokerId = brokerId;
     }
 }

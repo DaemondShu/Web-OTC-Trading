@@ -9,14 +9,15 @@
         <mapping-file>entity/Order.xml</mapping-file>
         <mapping-file>entity/Product.xml</mapping-file>
         <class>entity.User</class>
-        <class>entity.Trade</class>
         <class>entity.Order</class>
         <class>entity.Product</class>
+        <class>entity.Trade</class>
 
 
         <properties>
             <property name="showSql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+
 
 
         </properties>
