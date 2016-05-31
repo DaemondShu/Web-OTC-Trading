@@ -1,15 +1,20 @@
 package business;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.*;
 import data.DataManager;
 import entity.Order;
 import entity.Product;
+import entity.Trade;
 import net.sf.json.JSONObject;
+import sun.security.util.Resources_it;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 处理会修改数据的订单操作，比如交易
@@ -41,6 +46,9 @@ public class LogicActionBean implements LogicAction
 
             System.out.println(order.toString());
             order.init();
+            /*
+            if (order.equals("LIMIT"))
+                order.setCondition();*/
             dataManager.saveOrder(order);
 
             doTrade(order.getProductId());
@@ -85,67 +93,188 @@ public class LogicActionBean implements LogicAction
 
     /**
      * 检查交易
+     * TODO 事务管理
      * @return  完成了几个交易
      */
     @Override
     public int doTrade(final int productId)
     {
+//        try
+//        {
+            int result = 0;
+            //枚举所有物品,得到目前某个商品的市场价，按商品做循环
 
-        int result = 0;
-        //枚举所有物品,得到目前某个商品的市场价，按商品做循环
+            Map<String, Object> pfilter = new HashMap<>();
 
-        Map<String, Object> pfilter = new HashMap<>();
-        Map<String, Object> ofilter = new HashMap<>();
-        if (productId >= 0)
-            pfilter.put("id", productId);
-        List<Product> products = dataManager.superQuery(Product.class, pfilter);
+            if (productId >= 0)
+                pfilter.put("id", productId);
+            List<Product> products = dataManager.superQuery(Product.class, pfilter);
 
-        for (Product product : products)
-        {
-            System.out.println(product.toString());
-            ofilter.put("productId",product.getId());
+            for (Product product : products)
+            {
 
-            //'TODO' -> DOING
+                //Sell 'TOD' -> 'DOING'
+                updateTodoOrder(product.getId());
+                //do Trade in DOING
 
-
-            List<Order> orders = dataManager.superQuery(Order.class,ofilter);
-
-            //
+                //
 
 
-            //先要拿到所有todo的订单，看一下状态
-        }
+                //先要拿到所有todo的订单，看一下状态
+            }
 
-        return result;
+            return result;
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return -1;
+//        }
     }
 
     /**
-     * 得到目前的市场最低价，
-     * @param productId 产品id
-     * @return
+     * 更新TODO状态的卖订单到doing
+     * @return 更新的订单条目数
      */
-    public Double getMarketPrice(final int productId)
+    private int updateTodoOrder(final int productId)
     {
+        int count= 0;
         final Map<String, Object> ofilter = new HashMap<String, Object>(){{
             this.put("productId",productId);
-            this.put("status","DOING");
-            this.put("sort","price");
+            this.put("status","TODO");
             this.put("isSell",1);
         }};
 
-        List<Order> orders = dataManager.superQuery(Order.class,ofilter);
+        double marketPrice = dataManager.getMarketPrice(productId);
 
-        for (Order order: orders )
+        List<Order> orders = dataManager.superQuery(Order.class,ofilter);
+        for ( Order order: orders )
         {
-            return order.getPrice();
+            if (order.getType().equals("MARKET"))
+            {
+                order.setStatus("DOING");
+                count++;
+            }
+            else
+            {
+                double[] conditions = getMinMax(order.getCondition());
+                System.out.println(order.getPrice());
+                if (conditions[0] <= marketPrice  && marketPrice <= conditions[1])
+                {
+                    order.setStatus("DOING");
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 更新DOING状态的买卖订单之间到建立交易
+     * @return 更新的订单条目数
+     */
+
+    private int updateDoingOrder(final int productId)
+    {
+        int count= 0;
+        final Map<String, Object> buyfilter = new HashMap<String, Object>(){{
+            this.put("productId",productId);
+            this.put("status","DOING");
+            this.put("isSell",0);
+            this.put("sort",Arrays.asList("time","asc"));  //按时间顺序
+        }};
+
+        final Map<String, Object> sellfilter = new HashMap<String, Object>(){{
+            this.put("productId",productId);
+            this.put("status","DOING");
+            this.put("isSell",1);
+            this.put("sort",Arrays.asList("price","asc"));  //按时间顺序
+        }};
+
+        List<Order> buyOrders = dataManager.superQuery(Order.class,buyfilter);
+        List<Order> sellOrders = dataManager.superQuery(Order.class,sellfilter);
+
+
+        for (Order buyOrder : buyOrders)
+        {
+            for (Order sellOrder : sellOrders )
+                if (sellOrder.getSurplusVol() > 0)   //TODO 优化
+                {
+
+                    double[] buyConditions = getMinMax(buyOrder.getCondition());
+                    if (buyConditions[0] <= sellOrder.getPrice()  && sellOrder.getPrice() <= buyConditions[1])
+                    {
+                        if (createTrade(sellOrder,buyOrder))
+                            count++;
+                    }
+                    if (buyOrder.getSurplusVol() <=0 ) break;
+                }
         }
 
-
-        return null;
+        return count;
     }
 
 
+    /**
+     * 在两笔订单之间发起交易
+     * @param sellOrder
+     * @param buyOrder
+     * @return
+     */
+    private boolean createTrade(Order sellOrder, Order buyOrder)
+    {
+        try
+        {
+            Integer sellVol = sellOrder.getSurplusVol();
+            Integer buyVol = buyOrder.getSurplusVol();
+            int quantity = min(sellVol,buyVol);
+            sellOrder.setSurplusVol(sellVol - quantity);
+            buyOrder.setSurplusVol(buyVol-quantity);
 
-   // private boolean checkTodo
+            Trade trade = new Trade();
+
+
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    private int min(int a, int b)
+    {
+        return a < b ? a : b;
+    }
+
+    private double[] getMinMax(String s)
+    {
+        String[] resultStr = new String[]{"",""};
+        int iter = 0;
+        int len = s.length();
+        int k=0;
+
+
+        while (iter < len && k < 2)
+        {
+            char c = s.charAt(iter);
+            if (c == ',')
+            {
+                k++;
+            }
+            else resultStr[k] += c;
+            iter ++;
+        }
+
+        double[] result = new double[]{0,2147483647};
+
+        if (resultStr[0].length()>0)
+            result[0] = Double.parseDouble(resultStr[0]);
+        if (resultStr[1].length()>0)
+            result[1] = Double.parseDouble(resultStr[1]);
+
+        return result;
+    }
 
 }
