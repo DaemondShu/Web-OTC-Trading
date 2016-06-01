@@ -24,6 +24,8 @@ public interface DataManager
 
     void saveOrder(Order order);
 
+    void saveProduct(Product product);
+
     void flush();
 
 //    List<Product> getProducts();
@@ -53,4 +55,6 @@ public interface DataManager
     User getUser(int id);
 
     void updateOrder(Order order);
+
+    Product getProduct(int ProductId);
 }

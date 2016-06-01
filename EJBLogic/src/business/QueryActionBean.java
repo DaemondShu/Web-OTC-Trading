@@ -45,6 +45,8 @@ public class QueryActionBean implements QueryAction
         List<Product> products = dataManager.superQuery(Product.class,filterJson.entrySet());
 
         JSONArray jsonArray = new JSONArray();
+
+        //添加市场信息
         for (Product product: products )
         {
             JSONObject temp = JSONObject.fromObject(product);
@@ -62,7 +64,23 @@ public class QueryActionBean implements QueryAction
     public String tradeList(String filter)
     {
         JSONObject filterJson = JSONObject.fromObject(filter);
-        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Trade.class,filterJson.entrySet()));
+
+        List<Trade> trades = dataManager.superQuery(Trade.class,filterJson.entrySet());
+        JSONArray jsonArray = new JSONArray();
+
+        for (Trade trade : trades)
+        {
+            JSONObject temp = JSONObject.fromObject(trade);
+
+            temp.put("seller",dataManager.getUser(trade.getSellerId()).getCompany());
+            temp.put("buyer",dataManager.getUser(trade.getBuyerId()).getCompany());
+            temp.put("product",dataManager.getProduct(trade.getProductId()).getName());
+            temp.put("broker",dataManager.getUser(trade.getBrokerId()).getCompany());
+            jsonArray.add(temp);
+        }
+
+
+
         return jsonArray.toString();
     }
 

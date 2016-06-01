@@ -3,11 +3,10 @@
         version="2.0">
 
     <entity class="entity.Trade">
-        <table name="trade" schema="otc" />
+        <table name="trade" schema="otc" catalog=""/>
         <attributes>
             <id name="id">
                 <column name="id" precision="11"/>
-
             </id>
             <basic name="buyOrderId">
                 <column name="buyOrderId" nullable="false" precision="11"/>
@@ -20,6 +19,18 @@
             </basic>
             <basic name="quantity">
                 <column name="quantity" nullable="false" precision="11"/>
+            </basic>
+            <basic name="productId">
+                <column name="productId" nullable="false" precision="11"/>
+            </basic>
+            <basic name="buyerId">
+                <column name="buyerId" nullable="false" precision="11"/>
+            </basic>
+            <basic name="sellerId">
+                <column name="sellerId" nullable="false" precision="11"/>
+            </basic>
+            <basic name="brokerId">
+                <column name="brokerId" nullable="false" precision="11"/>
             </basic>
         </attributes>
     </entity>

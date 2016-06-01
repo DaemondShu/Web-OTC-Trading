@@ -57,8 +57,9 @@ public class Logic extends HttpServlet
                         throw new LogicException("cancel order failed");
                     break;
 
-                case "view":
-                    break;
+
+              //  case "view":
+              //      break;
 
                 case "doTrade":
                     logicAction.doTrade(-1);

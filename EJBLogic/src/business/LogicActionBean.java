@@ -33,6 +33,32 @@ public class LogicActionBean implements LogicAction
     }
 
 
+    public boolean createProduct(String data)
+    {
+        try
+        {
+            Product product = (Product) JSONObject.toBean(JSONObject.fromObject(data),Order.class);
+
+            //System.out.println(product.toString());
+            //order.init();
+            /*
+
+            if (order.equals("LIMIT"))
+                order.setCondition();*/
+            dataManager.saveProduct(product);
+
+            dataManager.flush();
+        }
+        catch (Exception e)
+        {
+            //context.setRollbackOnly();
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
     @Override
     /**
      * 创建一个订单，成功返回null，失败返回错误信息
@@ -105,6 +131,16 @@ public class LogicActionBean implements LogicAction
 //        {
             int result = 0;
             //枚举所有物品,得到目前某个商品的市场价，按商品做循环
+            Product pp = new Product();
+       // pp.setId(1);
+//            pp.setName("temp");
+//             pp.setKind("temp");
+//        dataManager.saveProduct(pp);
+//        Product pp2 = new Product();
+//        //pp2.setId(1);
+//        pp2.setName("temp2");
+//        pp2.setKind("temp2");
+//        dataManager.saveProduct(pp2);
 
             Map<String, Object> pfilter = new HashMap<>();
 
@@ -122,12 +158,7 @@ public class LogicActionBean implements LogicAction
                 {
                     count = updateTodoOrder(product.getId())+updateDoingOrder(product.getId());
                 }
-                //do Trade in DOING
 
-                //
-
-
-                //先要拿到所有todo的订单，看一下状态
             }
 
             return result;
@@ -243,12 +274,12 @@ public class LogicActionBean implements LogicAction
             dataManager.updateOrder(sellOrder);
             dataManager.updateOrder(buyOrder);
 
+            Product product = dataManager.getProduct(buyOrder.getProductId());
+
             Trade trade = new Trade();
-            trade.init(buyOrder.getId(),sellOrder.getId(),quantity);
+            trade.init(buyOrder,sellOrder,product,quantity);
            // trade.setId(6);
             dataManager.saveTrade(trade);
-
-            System.out.println("4455556666");
 
             //dataManager.flush();
             return true;

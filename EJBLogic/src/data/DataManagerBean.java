@@ -4,12 +4,10 @@ import entity.Order;
 import entity.Product;
 import entity.Trade;
 import entity.User;
-import net.sf.json.JSONArray;
 
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.*;
 
@@ -18,6 +16,7 @@ import java.util.*;
  */
 
 //@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionManagement(TransactionManagementType.CONTAINER)
 @Stateless(name = "DataManagerEJB")
 public class DataManagerBean implements DataManager
 {
@@ -111,12 +110,30 @@ public class DataManagerBean implements DataManager
         //entityManager.persist(order);
     }
 
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    //不加事务，外部连续persist就会因为id没有赋值而出问题,要保证一个事务内id唯一，而且必须事务新建
+    public void saveProduct(Product product)
+    {
+        //entityManager.getTransaction().begin();
+        entityManager.persist(product);
+        entityManager.flush();
+    }
+
+    public Product getProduct(int productId)
+    {
+        return dao.get(Product.class,productId);
+    }
+
+
+
     public void updateOrder(Order order)
     {
         dao.update(order);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void saveUser(User user)
     {
         //throw new EJBException("tian na");
@@ -125,6 +142,7 @@ public class DataManagerBean implements DataManager
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void saveTrade(Trade trade)
     {
 
@@ -134,10 +152,7 @@ public class DataManagerBean implements DataManager
 
 
         entityManager.flush();
-       // entityManager.clear();
-        //entityManager.refresh(trade);
 
-        //entityManager.persist(trade);
     }
 
     public Double getMarketPrice(final int productId)
