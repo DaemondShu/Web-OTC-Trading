@@ -8,5 +8,6 @@ a simple web OTC Electronic Trading System
 
 ### 文件说明
 - 网页后台： /WebBackEnd/*
+   访问后台的测试样例可以参见/WebBackEnd/web/test.html
 - 业务逻辑： /EJBLogic/*
 - 数据库 ： /sql/otc*.sql
