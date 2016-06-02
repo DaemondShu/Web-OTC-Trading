@@ -148,6 +148,7 @@
     // 为了方便筛选，提供一个filter参数，key就是属性名，值是要求。比如 kind:"Energy"就是找出所有类型是kind的productlist。
     // 同时提供排序选项和分页选项，可以参看testQueryOrderList
     // 对于product，会多一个市场价的属性。
+    // 查询多个条件之间都是and关系，同时满足才行，新增in和or的功能
 
     /**
      * 查询期货信息，还能查到市场价，如果没有市场价就是-1，
@@ -187,6 +188,7 @@
         ajax("Query","get",{
             action: "orderList",
             filter: JSON.stringify({
+                status: ["DONE","TODO","CANCEL"],// 属性也可以不单一，左边的意思就是status等于DONE，TODO，CANCEL其中的任意一个就算满足
                 sort: ["price","asc"],    //价格按照按asc价格升序返回，desc按降序返回
                 maxNum: 4,               //最多返回几条数据，如果要做翻页，每页显示有限个，可以集合startNum去使用
                 startNum:1               //返回从第startNum条开始的数据，为1的话就是跳过第一个
@@ -202,10 +204,21 @@
         ajax("Query","get",{
             action: "tradeList",
             filter: JSON.stringify({
-                sellerId: 4
+                //or关系内部的key-value只要有一个成立就行，or内部不之前嵌套，只能是最朴素的key-value关系
+                // 比如or里面再or，或者sellerId:[1,2]这不是可以的
+                // Or和其他的同层次的条件依旧是and关系
+                or:{
+                    sellerId : 5,
+                    buyerId : 5
+                },
+                brokerId: [2,4]
             })
         })
     }
+
+    //新增功能的性能说明，从效果上看 key:[value] 等同于 key:value ，但是性能 key：value高， 单一匹配不要用[]
+    //同时 key:[value1,value2] 效果等同于 or:{key:value1, key:value2}但是前者[]性能更佳
+
 
     //broker也是选择的
 

@@ -4,6 +4,8 @@ import entity.Order;
 import entity.Product;
 import entity.Trade;
 import entity.User;
+import net.sf.json.JSONObject;
+import org.omg.CORBA.OBJ_ADAPTER;
 
 import javax.ejb.*;
 import javax.persistence.EntityManager;
@@ -58,8 +60,17 @@ public class DataManagerBean implements DataManager
                 case "startNum":
                     query.setStartNum((Integer) item.getValue());
                     break;
+                case "or":
+                    Map<String,Object> sets =(Map)item.getValue();
+                    query.or(sets.entrySet());
+                    break;
                 default:
-                    query.eq(key,item.getValue());
+                    Object value = item.getValue();
+                    if (value instanceof List)
+                    {
+                        query.in(key,(List<Object>)value);
+                    }
+                    else query.eq(key,value);
             }
 
         }
