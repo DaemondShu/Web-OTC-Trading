@@ -59,7 +59,7 @@ public class User extends HttpServlet
                     String error = userAction.register(val(USERDATA));
                     if (error != null)
                         throw new LogicException(error);
-
+                    break;
                 default:
                     throw new LogicException("invalid action");
             }

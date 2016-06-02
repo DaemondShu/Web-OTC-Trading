@@ -5,8 +5,8 @@
     <link href="bootstrap/dist/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/jquery.min.js"></script>
-
-    <link href="css/hover.css" rel="stylesheet" media="all">
+    <script src="js/helpFunction.js"></script>
+    <script src="js/browsing.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
 
 
@@ -73,11 +73,8 @@
                         <th>Product</th>
                         <th>OrderType</th>
                         <th>Broker</th>
-
-                        <!--<th>Time</th>-->
                         <th>Price</th>
                         <th>Quantity</th>
-
                         <th>Cancel</th>
                     </tr>
                     </thead>
@@ -89,29 +86,6 @@
                         <th>Limit</th>
                         <td>M </td>
                         <td>176</td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Gold</td>
-                        <th>Market</th>
-                        <td>T </td>
-                        <td>176</td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Gold</td>
-                        <th>Stop(>=120)</th>
-                        <td>T </td>
-                        <td>176</td>
-                        <!--<td>2016/4/30</td>-->
                         <td>100</td>
                         <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
                     </tr>
@@ -147,18 +121,6 @@
                         <td>100</td>
                         <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
                     </tr>
-
-
-                    <tr>
-                        <td>2</td>
-                        <td>Gold</td>
-                        <th>Stop(>=120)</th>
-                        <td>M </td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -275,5 +237,40 @@
 </div>
 <!---->
 </body>
+<script>
+    $(document).ready(function () {
+        var username=getCookie("username");
+        ajax("Query", "get", {
+            action: "userList",
+            filter: JSON.stringify({
+                username: username
+            })
+        }, function (data) {
+            var user = JSON.parse(data);
+            var userid = user[0].id;
+
+            ajax("Query","get",{
+                action:"orderList",
+                filter: JSON.stringify({
+                    userId: userid,
+                    isSell:1
+                })
+
+            },function (sellStr) {
+                alert(sellStr);
+                ajax("Query","get",{
+                    action:"orderList",
+                    filter: JSON.stringify({
+                        userId: userid,
+                        isSell:0
+                    })
+
+                },function (buyStr) {
+                    alert(buyStr);
+                });
+            });
+        });
+    })
+</script>
 </html>
 		

@@ -6,6 +6,8 @@
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
+    <script src="js/helpFunction.js"></script>
+    <script src="js/browsing.js"></script>
     <!-- Custom Theme files -->
     <link href="css/hover.css" rel="stylesheet" media="all">
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
@@ -74,87 +76,50 @@
             <div class="future-section">
                 <div class="future-grid1">
                     <div class="col-md-4 future-grid">
+                        <div class="product">
+                            <h2 class="name">Nature Gas</h2>
+                            <h3 class="kind">Kind:Energy</h3>
+                            <h3 class="broker">Broker:M</h3>
+                            <span><a href="single.html">Detail</a></span>
+                            <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 future-grid">
 
                         <div class="product">
-                            <h2>Nature Gas</h2>
-                            <h3>Kind:Energy</h3>
-                            <h3>Quantity:100</h3>
-                            <h3>Broker:M</h3>
+                            <h2 class="name">Nature Gas</h2>
+                            <h3 class="kind">Kind:Energy</h3>
+                            <h3 class="broker">Broker:M</h3>
                             <span><a href="single.html">Detail</a></span>
-                            <p><span></span> 176.00 &euro;</p>
+                            <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
                         </div>
-
 
                     </div>
                     <div class="col-md-4 future-grid">
 
                         <div class="product">
-                            <h2>Gold</h2>
-                            <h3>Kind:Metal</h3>
-                            <h3>Quantity:100</h3>
-                            <h3>Broker:M</h3>
+                            <h2 class="name">Nature Gas</h2>
+                            <h3 class="kind">Kind:Energy</h3>
+                            <h3 class="broker">Broker:M</h3>
                             <span><a href="single.html">Detail</a></span>
-                            <p><span></span> 376.00 &euro;</p>
+                            <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
                         </div>
-
-
-                    </div>
-                    <div class="col-md-4 future-grid">
-
-                        <div class="product">
-                            <h2>Silver</h2>
-                            <h3>Kind:Energy</h3>
-                            <h3>Quantity:100</h3>
-                            <h3>Broker:M</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span> 120.00 &euro;</p>
-                        </div>
-
-
-                    </div>
-
-                </div>
-                <div class="future-grid2">
-                    <div class="col-md-4 future-grid">
-
-                        <div class="product">
-                            <h2>Nature Gas</h2>
-                            <h3>Kind:Energy</h3>
-                            <h3>Quantity:100</h3>
-                            <h3>Broker:M</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span> 176.00 &euro;</p>
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-4 future-grid">
-
-                        <div class="product">
-                            <h2>Nature Gas</h2>
-                            <h3>Kind:Energy</h3>
-                            <h3>Quantity:100</h3>
-                            <h3>Broker:T</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span> 176.00 &euro;</p>
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-4 future-grid">
-
-                        <div class="product">
-                            <h2>Nature Gas</h2>
-                            <h3>Kind:Energy</h3>
-                            <h3>Quantity:100</h3>
-                            <h3>Broker:T</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span> 176.00 &euro;</p>
-                        </div>
-
 
                     </div>
                 </div>
+
+            </div>
+            <div class="single-section" style="display: none;">
+                <div class="col-md-4 future-grid">
+                    <div class="product">
+                        <h2 class="name">Nature Gas</h2>
+                        <h3 class="kind">Kind:Energy</h3>
+                        <h3 class="broker">Broker:M</h3>
+                        <span><a href="single.html">Detail</a></span>
+                        <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -196,6 +161,39 @@
         <p class="copyright">Copyright &copy; 2016. All rights reserved.
     </div>
 </div>
-<!---->
+
 </body>
+<script>
+    $(document).ready(function () {
+        var username = getCookie("username");
+        ajax("Query", "get", {
+            action: "userList",
+            filter: JSON.stringify({
+                username: username
+            })
+        }, function (data) {
+            var user = JSON.parse(data);
+            var userid = user[0].id;
+            var userRole = user[0].role;
+            var filter = "{}";
+            if (userRole == "BROKER") {
+                filter = JSON.stringify({
+                    brokerId: userid
+                });
+            }
+
+            ajax("Query", "get", {
+                action: "productList",
+                filter: filter
+            },function (str) {
+                //alert(str);
+                var jsonArr=JSON.parse(str);
+                showProduct(jsonArr);
+            });
+
+        });
+
+
+    });
+</script>
 </html>

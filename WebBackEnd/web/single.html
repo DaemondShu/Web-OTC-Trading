@@ -12,7 +12,8 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href='http://fonts.useso.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
-
+    <script src="js/helpFunction.js"></script>
+    <script src="js/browsing.js"></script>
 </head>
 <body>
 <!---->
@@ -134,13 +135,26 @@
 
     <div class="clearfix"></div>
 </div>
-<!---->
 <div class="footer">
     <div class="container">
         <p class="copyright">Copyright &copy; 2016. All rights reserved.
     </div>
 </div>
-<!---->
 </body>
+<script>
+    $(document).ready(function () {
+        var productId=getQueryString("productId");
+        ajax("Query","get",{
+            action:"productList",
+            filter:JSON.stringify({
+                id:productId
+            })
+        },function (str) {
+            //alert(str);
+            var json=JSON.parse(str);
+            showDetail(json);
+        });
+    })
+</script>
 </html>
 		
