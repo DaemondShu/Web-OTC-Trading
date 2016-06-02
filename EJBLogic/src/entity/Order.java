@@ -25,6 +25,8 @@ public class Order implements Serializable
     private Integer expectedVol;
     private Integer surplusVol;
     private Double price;
+    private Integer brokerId;
+
 
     @Id
     @Column(name = "id", nullable = false)
@@ -37,6 +39,24 @@ public class Order implements Serializable
     {
         this.id = id;
     }
+
+
+    @Basic
+    @Column(name = "brokerId", nullable = true)
+    public Integer getBrokerId()
+    {
+        return brokerId;
+    }
+
+    public void setBrokerId(Integer brokerId) throws Exception
+    {
+        if (this.brokerId!=null)
+            if (this.brokerId!=brokerId)
+                throw new Exception("brokerId Wrong");
+
+        this.brokerId = brokerId;
+    }
+
 
     @Basic
     @Column(name = "productId", nullable = true)
@@ -206,6 +226,7 @@ public class Order implements Serializable
             throw new Exception("bad attributes");
         this.surplusVol = this.expectedVol;
 
+
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         if (this.type.equals("MARKET")) //市场订单和购买订单直接进入执行状态
         {
@@ -237,4 +258,6 @@ public class Order implements Serializable
                 ", price=" + price +
                 '}';
     }
+
+
 }

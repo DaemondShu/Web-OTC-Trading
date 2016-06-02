@@ -1,23 +1,15 @@
 package business;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.*;
 import data.DataManager;
 import entity.Order;
 import entity.Product;
 import entity.Trade;
 import net.sf.json.JSONObject;
-import sun.security.util.Resources_it;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 import java.util.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * 处理会修改数据的订单操作，比如交易
  * Created by monkey_d_asce on 16-5-29.
@@ -74,6 +66,9 @@ public class LogicActionBean implements LogicAction
 
             System.out.println(order.toString());
             order.init();
+
+
+            order.setBrokerId(dataManager.getProduct(order.getProductId()).getBrokerId());
             /*
             if (order.equals("LIMIT"))
                 order.setCondition();*/
