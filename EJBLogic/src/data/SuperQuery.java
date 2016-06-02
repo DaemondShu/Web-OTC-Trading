@@ -1,13 +1,7 @@
 package data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -117,6 +111,10 @@ public class SuperQuery implements Serializable
         return value == null;
     }
 
+
+    /**
+     * 多个key有一个等于value就算成
+     */
     public void or(List<String> propertyName, Object value) {
         if (isNullOrEmpty(value))
             return;
@@ -127,6 +125,40 @@ public class SuperQuery implements Serializable
             predicate = criteriaBuilder.or(predicate, criteriaBuilder.equal(from.get(propertyName.get(i)), value));
         this.predicates.add(predicate);
     }
+
+
+    public void or(List<String> propertyName,List<Object> value) {
+        if (propertyName == null || value == null)
+            return;
+        int size = propertyName.size();
+        if (size <=0 || size !=value.size())
+            return;
+
+        Predicate predicate = criteriaBuilder.or(criteriaBuilder.equal(from.get(propertyName.get(0)), value.get(0)));
+        for (int i = 1; i < size; ++i)
+            predicate = criteriaBuilder.or(predicate, criteriaBuilder.equal(from.get(propertyName.get(i)), value.get(i)));
+        this.predicates.add(predicate);
+    }
+
+    /**
+     *  or关系之间的key-value对
+     */
+    public void or(Set<Map.Entry<String,Object>> conditions) {
+
+        if (conditions==null || conditions.size() <=0)
+            return;
+
+        Predicate predicate = null;
+        for (Map.Entry<String,Object> item : conditions)
+        {
+            predicate = (predicate == null)
+                    ? criteriaBuilder.or(criteriaBuilder.equal(from.get(item.getKey()), item.getValue()))
+                    : criteriaBuilder.or(predicate, criteriaBuilder.equal(from.get(item.getKey()), item.getValue()));
+        }
+
+        this.predicates.add(predicate);
+    }
+
 
     public void orLike(List<String> propertyName, String value) {
         if (isNullOrEmpty(value) || (propertyName.size() == 0))
