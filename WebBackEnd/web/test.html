@@ -88,7 +88,7 @@
             action : "createOrder",
             orderData : JSON.stringify({
                 productId: 1,    //productid已经包含了brokerId的信息
-                userId: 3,          //订单发起人id
+                userId: 4,          //订单发起人id
                 isSell:1,      //买还是卖，不要用true和false，1表示卖，0表示买
                 // status: "TODO",   //需要执行,订单一共四种状态（TODO：需要执行，DOING：正在执行，DONE：已经完成）
                 type: "MARKET",   //订单类型，三种：MARKET，LIMIT(优于当前市场价时购买/交易)，STOP(优于用户指定价时购买/交易)
@@ -115,9 +115,9 @@
                 isSell:0,      //买还是卖，不要用true和false，1表示卖，0表示买
 
                 type: "LIMIT",   //订单类型，三种：MARKET，LIMIT(优于当前市场价时购买/交易)，STOP(优于用户指定价时购买/交易)
-                condition: "110,500", // 针对LIMIT和STOP订单的触发条件, 如果是LIMIT的话要在前端自动填充这个condition,
+                condition: "0,500", // 针对LIMIT和STOP订单的触发条件, 如果是LIMIT的话要在前端自动填充这个condition,
                 //表示订单的触发条件，逗号分隔的两个舒，表示一旦市价落到这个范围里(1124<=marketPrice<=2500)就触发订单，如果是“1124,”就是表示单向,在market订单里无效，取消注释传上了也无视，
-                expectedVol: 150, //预期交易量
+                expectedVol: 45, //预期交易量
             })
         })
     }

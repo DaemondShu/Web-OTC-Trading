@@ -35,6 +35,7 @@ public class Trade
         this.buyerId = buyOrder.getUserId();
         this.sellerId = sellOrder.getUserId();
         this.brokerId = product.getBrokerId();
+        this.price = sellOrder.getPrice();
     }
 
     @Id
@@ -180,6 +181,17 @@ public class Trade
     }
 
 
+    private Double price;
 
+    @Basic
+    @Column(name = "price", nullable = true)
+    public Double getPrice()
+    {
+        return price;
+    }
 
+    public void setPrice(Double price)
+    {
+        this.price = price;
+    }
 }

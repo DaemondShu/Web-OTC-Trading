@@ -38,6 +38,9 @@
             <basic name="price">
                 <column name="price" nullable="false" precision="-1"/>
             </basic>
+            <basic name="brokerId">
+                <column name="brokerId" nullable="false" precision="11"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

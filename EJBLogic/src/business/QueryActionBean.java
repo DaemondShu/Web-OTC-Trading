@@ -31,7 +31,25 @@ public class QueryActionBean implements QueryAction
     public String orderList(String filter)
     {
         JSONObject filterJson = JSONObject.fromObject(filter);
-        JSONArray jsonArray = JSONArray.fromObject(dataManager.superQuery(Order.class,filterJson.entrySet()));
+        List<Order> orders = dataManager.superQuery(Order.class,filterJson.entrySet());
+
+        JSONArray jsonArray = new JSONArray();
+
+        for (Order order: orders )
+        {
+            JSONObject temp = JSONObject.fromObject(order);
+
+
+            temp.put("product",dataManager.getProduct(order.getProductId()).getName());
+            temp.put("broker",dataManager.getUser(order.getBrokerId()).getCompany());
+            temp.put("user",dataManager.getUser(order.getUserId()).getCompany());
+
+
+            jsonArray.add(temp);
+
+        }
+
+
         return jsonArray.toString();
     }
 
