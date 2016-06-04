@@ -5,7 +5,8 @@
     <link href="bootstrap/dist/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/jquery.min.js"></script>
-    <link href="css/hover.css" rel="stylesheet" media="all">
+    <script src="js/helpFunction.js"></script>
+    <script src="js/user.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="application/x-javascript"> addEventListener("load", function ()
@@ -51,10 +52,14 @@
 
         <div class="header-right">
 
-            <div class="signin">
-                <ul>
+            <div class="signin" >
+                <ul class="notLogin" style="display: block">
                     <li><a href="registration.html">REGISTRATION</a> <span>/</span> &nbsp;</li>
                     <li><a href="login.html"> LOGIN</a></li>
+                </ul>
+                <ul class="Logined" style="display: none" >
+                    <li><nobr id="username"></nobr> <span></span> &nbsp;</li>
+                    <li><a onclick="logout()"> LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -88,5 +93,11 @@
 </div>
 <!---->
 </body>
+<script>
+    $(document).ready(function () {
+        var username=getCookie("username");
+        showLoginInfo(username);
+    })
+</script>
 </html>
 		

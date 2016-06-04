@@ -1,26 +1,6 @@
 /**
  * Created by lyn on 16-6-1.
  */
-$.fn.serializeObject = function ()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function ()
-    {
-        if (o[this.name])
-        {
-            if (!o[this.name].push)
-            {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else
-        {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
 
 function register()
 {
@@ -42,7 +22,7 @@ function register()
                     role:formData.role
                 })
             },function (data) {
-                alert(data);
+                //alert(data);
 
             });
 
@@ -56,6 +36,24 @@ function login() {
     formData.action="login";
     ajax("User","get",formData,function (data) {
         setCookie("username",formData.username,"d1","/");
+
     });
     return false;
+}
+
+function showLoginInfo(username) {
+    if(username!="" && username!=null)
+    {
+        $(".notLogin").hide();
+        $("#username").html("Hi! "+username);
+        $(".Logined").show();
+
+
+    }
+
+}
+
+function logout() {
+    setCookie("username","","s0","/");
+    
 }

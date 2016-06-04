@@ -51,7 +51,7 @@ public class Order implements Serializable
     public void setBrokerId(Integer brokerId) throws Exception
     {
         if (this.brokerId!=null)
-            if (this.brokerId!=brokerId)
+            if (!this.brokerId.equals(brokerId) )
                 throw new Exception("brokerId Wrong");
 
         this.brokerId = brokerId;

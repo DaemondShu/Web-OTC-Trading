@@ -8,8 +8,9 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/helpFunction.js"></script>
     <script src="js/browsing.js"></script>
+    <script src="js/user.js"></script>
     <!-- Custom Theme files -->
-    <link href="css/hover.css" rel="stylesheet" media="all">
+
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <!-- Custom Theme files -->
 
@@ -54,10 +55,14 @@
 
         <div class="header-right">
 
-            <div class="signin">
-                <ul>
-                    <li><a href="registration.html">REGISTRATION</a> <span>/<span> &nbsp;</li>
+            <div class="signin" >
+                <ul class="notLogin" style="display: block">
+                    <li><a href="registration.html">REGISTRATION</a> <span>/</span> &nbsp;</li>
                     <li><a href="login.html"> LOGIN</a></li>
+                </ul>
+                <ul class="Logined" style="display: none" >
+                    <li><nobr id="username"></nobr> <span></span> &nbsp;</li>
+                    <li><a onclick="logout()"> LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -75,37 +80,7 @@
             </div>
             <div class="future-section">
                 <div class="future-grid1">
-                    <div class="col-md-4 future-grid">
-                        <div class="product">
-                            <h2 class="name">Nature Gas</h2>
-                            <h3 class="kind">Kind:Energy</h3>
-                            <h3 class="broker">Broker:M</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 future-grid">
 
-                        <div class="product">
-                            <h2 class="name">Nature Gas</h2>
-                            <h3 class="kind">Kind:Energy</h3>
-                            <h3 class="broker">Broker:M</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
-                        </div>
-
-                    </div>
-                    <div class="col-md-4 future-grid">
-
-                        <div class="product">
-                            <h2 class="name">Nature Gas</h2>
-                            <h3 class="kind">Kind:Energy</h3>
-                            <h3 class="broker">Broker:M</h3>
-                            <span><a href="single.html">Detail</a></span>
-                            <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
-                        </div>
-
-                    </div>
                 </div>
 
             </div>
@@ -116,7 +91,7 @@
                         <h3 class="kind">Kind:Energy</h3>
                         <h3 class="broker">Broker:M</h3>
                         <span><a href="single.html">Detail</a></span>
-                        <p><span></span><nobr class="price"> 176.00 </nobr>&euro;</p>
+                        <p><span></span><nobr class="price"></nobr></p>
                     </div>
                 </div>
                 
@@ -124,33 +99,30 @@
         </div>
     </div>
     <div class="col-md-3 side-bar">
-        <div class="categories">
-            <h3>CATEGORIES</h3>
-            <ul>
-                <li><a href="#">Energy</a></li>
-                <li><a href="#">Metal</a></li>
-                <li><a href="#">Oil</a></li>
-                <li><a href="#">Fossil</a></li>
+        <div id="filter">
+            <!--<div class="categories kind">-->
+                <!--<h3>CATEGORIES</h3>-->
+                <!--<ul>-->
 
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<br>-->
+            <!--<div class="categories broker">-->
+                <!--<h3>BROKERS</h3>-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<br>-->
+        </div>
+        <div class="name-searching">
+            <h4>Search</h4>
+            <ul>
+                <input type="text" placeholder="search by name" id="seachName" required/>
+                <input type="button" value="Ok" onclick="showFilterProduct('name',$('#seachName').val())">
             </ul>
         </div>
-        <div class="sales">
 
-            <div class="pricing">
-                <h4>Price range</h4>
-                <input type="text" placeholder="from" required/>
-                <input type="text" placeholder="to" required/>
-                <input type="button" value="Ok">
-                <div class="clearfix"></div>
-            </div>
-            <div class="name-searching">
-                <h4>Search</h4>
-                <ul>
-                    <input type="text" placeholder="search by name" required/>
-                    <input type="button" value="Ok">
-                </ul>
-            </div>
-        </div>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -166,12 +138,15 @@
 <script>
     $(document).ready(function () {
         var username = getCookie("username");
+        if(username==null) username="";
+        showLoginInfo(username);
         ajax("Query", "get", {
             action: "userList",
             filter: JSON.stringify({
                 username: username
             })
         }, function (data) {
+            //msg(data);
             var user = JSON.parse(data);
             var userid = user[0].id;
             var userRole = user[0].role;
@@ -186,9 +161,16 @@
                 action: "productList",
                 filter: filter
             },function (str) {
-                //alert(str);
+                //msg(str);
+
                 var jsonArr=JSON.parse(str);
+                $("#filter").html("");
+                showFilter('kind','Product',jsonArr);
+                if(userRole=='TRADER')
+                        showFilter('broker','Product',jsonArr);
                 showProduct(jsonArr);
+
+
             });
 
         });
