@@ -269,7 +269,7 @@ function showFilterTrade(con,str) {
         {
             var tmp={
                 sellerId:userid,
-                buyId:userid
+                buyerId:userid
             }
             filter["or"]=tmp;
 
