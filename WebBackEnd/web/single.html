@@ -6,13 +6,13 @@
 
     <script src="js/jquery.min.js"></script>
 
-    <link href="css/hover.css" rel="stylesheet" media="all">
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
 
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href='http://fonts.useso.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
-
+    <script src="js/helpFunction.js"></script>
+    <script src="js/browsing.js"></script>
 </head>
 <body>
 <!---->
@@ -39,15 +39,15 @@
             </div>
         </div>
 
-        <div class="header-right">
+        <!--<div class="header-right">-->
 
-            <div class="signin">
-                <ul>
-                    <li><a href="registration.html">REGISTRATION</a> <span>/</span> &nbsp;</li>
-                    <li><a href="login.html"> LOGIN</a></li>
-                </ul>
-            </div>
-        </div>
+            <!--<div class="signin">-->
+                <!--<ul>-->
+                    <!--<li><a href="registration.html">REGISTRATION</a> <span>/</span> &nbsp;</li>-->
+                    <!--<li><a href="login.html"> LOGIN</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="clearfix"></div>
     </div>
 </div>
@@ -62,8 +62,8 @@
                 <p>Here need some info about the company</p>
 
 
-                <a class="add" href="javascript: void(0);">Order</a>
-                <span class="pricespan">430.00 &euro;</span>
+                <a class="add" href="javascript: void(0);" style="display: block">Order</a>
+                <span><nobr class="pricespan"></nobr> &euro;</span>
                 <div class="clearfix"></div>
 
 
@@ -82,51 +82,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>1254</td>
-                        <td>127</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>1252</td>
-                        <td>55</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>1250</td>
-                        <td>55</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100</td>
-                        <td>1248</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>120</td>
-                        <td>1246</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>60</td>
-                        <td>1242</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+
                     </tbody>
                 </table>
-            </div><!-- table-responsive -->
+            </div>
 
 
         </div>
@@ -134,13 +93,44 @@
 
     <div class="clearfix"></div>
 </div>
-<!---->
 <div class="footer">
     <div class="container">
         <p class="copyright">Copyright &copy; 2016. All rights reserved.
     </div>
 </div>
-<!---->
 </body>
+<script>
+    $(document).ready(function () {
+        var productId=getQueryString("productId");
+        ajax("Query","get",{
+            action:"orderList",
+            filter:JSON.stringify({
+                productId:productId,
+                isSell:1,
+                status:"DOING",
+                sort:["price","asc"],
+                maxNum:3,
+                startNum:0
+            })
+        },function (str) {
+            //alert(str);
+            var json=JSON.parse(str);
+            showDoingDetail(json);
+            ajax("Query","get",{
+                action:"tradeList",
+                filter:JSON.stringify({
+                    productId:productId,
+                    sort:["time","desc"],
+                    maxNum:3,
+                    startNum:0
+                })
+            },function (data) {
+                //alert(data);
+                var trade=JSON.parse(data);
+                showDoneDetail(trade);
+            });
+        });
+    })
+</script>
 </html>
 		

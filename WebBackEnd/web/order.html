@@ -2,11 +2,13 @@
 <html>
 <head>
     <title>Order</title>
+    <script src="js/jquery.min.js"></script>
     <link href="bootstrap/dist/css/bootstrap.css" rel='stylesheet' type='text/css'/>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-
-    <link href="css/hover.css" rel="stylesheet" media="all">
+    <script src="js/responsiveslides.min.js"></script>
+    <script src="js/helpFunction.js"></script>
+    <script src="js/browsing.js"></script>
+    <script src="js/user.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
 
 
@@ -43,10 +45,14 @@
 
         <div class="header-right">
 
-            <div class="signin">
-                <ul>
+            <div class="signin" >
+                <ul class="notLogin" style="display: block">
                     <li><a href="registration.html">REGISTRATION</a> <span>/</span> &nbsp;</li>
                     <li><a href="login.html"> LOGIN</a></li>
+                </ul>
+                <ul class="Logined" style="display: none" >
+                    <li><nobr id="username"></nobr> <span></span> &nbsp;</li>
+                    <li><a onclick="logout()"> LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -54,178 +60,165 @@
     </div>
 </div>
 
-<script src="js/responsiveslides.min.js"></script>
-<div class="single-section">
 
-    <div class="col-md-12 side-bar2">
-        <div class="product-price">
+<div class="men-futures">
+    <div class="view-container">
+        <div class="col-md-9 futures">
+            <div class="product-price">
 
-            <div class="product-name">
-                <h2>Orders To Be Processed</h2>
-                <h4>Sell</h4>
+                <div class="product-name">
+                    <h2>Orders To Be Processed</h2>
+                    <h4>Sell</h4>
+                </div>
+
+                <div class="table-responsive" id="sellProducts">
+                    <table class="table table-bordered mb30">
+                        <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>Product</th>
+                            <th>OrderType</th>
+                            <th>Broker</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Cancel</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>1</td>
+                            <td>Nature Gas</td>
+                            <th>Limit</th>
+                            <td>M </td>
+                            <td>176</td>
+                            <td>100</td>
+                            <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="product-name">
+                    <h4>Buy</h4>
+                </div>
+                <div class="table-responsive" id="buyProducts">
+                    <table class="table table-bordered mb30">
+                        <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>Product</th>
+                            <th>OrderType</th>
+                            <th>Broker</th>
+                            <!--<th>Time</th>-->
+                            <th>Quantity</th>
+                            <th>Cancel</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>1</td>
+                            <td>Nature Gas</td>
+                            <th>Limit</th>
+                            <td>M </td>
+                            <!--<td>2016/4/30</td>-->
+                            <td>100</td>
+                            <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- table-responsive -->
+
+
             </div>
-
-            <div class="table-responsive">
-                <table class="table table-bordered mb30">
-                    <thead>
-                    <tr>
-                        <th>OrderId</th>
-                        <th>Product</th>
-                        <th>OrderType</th>
-                        <th>Broker</th>
-
-                        <!--<th>Time</th>-->
-                        <th>Price</th>
-                        <th>Quantity</th>
-
-                        <th>Cancel</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <tr>
-                        <td>1</td>
-                        <td>Nature Gas</td>
-                        <th>Limit</th>
-                        <td>M </td>
-                        <td>176</td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Gold</td>
-                        <th>Market</th>
-                        <td>T </td>
-                        <td>176</td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Gold</td>
-                        <th>Stop(>=120)</th>
-                        <td>T </td>
-                        <td>176</td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="product-name">
-                <h4>Buy</h4>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered mb30">
-                    <thead>
-                    <tr>
-                        <th>OrderId</th>
-                        <th>Product</th>
-                        <th>OrderType</th>
-                        <th>Broker</th>
-                        <!--<th>Time</th>-->
-                        <th>Quantity</th>
-                        <th>Cancel</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <tr>
-                        <td>1</td>
-                        <td>Nature Gas</td>
-                        <th>Limit</th>
-                        <td>M </td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-
-                    <tr>
-                        <td>2</td>
-                        <td>Gold</td>
-                        <th>Stop(>=120)</th>
-                        <td>M </td>
-                        <!--<td>2016/4/30</td>-->
-                        <td>100</td>
-                        <td><a href="#"> <span class="glyphicon glyphicon-remove"></span> </a></td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- table-responsive -->
-
+            <a class="addneworder" style="display: none">ADD NEW ORDER</a>
+            <br>
+        </div>
+    </div>
+    <div class="col-md-3 side-bar">
+        <div id="filter">
 
         </div>
-        <a class="addneworder">ADD NEW ORDER</a>
-    </div>
+        <!--<div class="name-searching">-->
+        <!--<h4>Search</h4>-->
+        <!--<ul>-->
+        <!--<input type="text" placeholder="search by futures" required/>-->
+        <!--<input type="button" value="Ok">-->
+        <!--</ul>-->
+        <!--</div>-->
 
+    </div>
     <div class="clearfix"></div>
 </div>
 <div class="order">
+    <button type="button" class="close">
+    &times;
+    </button>
     <div class="col-md-11 reg-form">
         <div class="reg">
+            <form id="orderForm" onsubmit="return addOrder()">
+                <ul>
+                    <li class="text-info">Broker:</li>
+                    <li>
+                        <select class="form-control" id="broker-select" name="brokerId">
+                            <!--<option value="2">1111</option>-->
+                            <!--<option value="3">1111</option>-->
+                        </select>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="text-info">Product:</li>
+                    <li>
+                        <select class="form-control" id="product-select" name="productId">
 
-            <form>
+                        </select>
+                    </li>
+                </ul>
                 <ul>
                     <li class="text-info">Buy/Sell:</li>
-                    <li><input type="text" value=""></li>
                     <label class="checkbox-inline">
                         <input type="radio" name="isSell"
                                value=1 checked> Sell
                     </label>
                     <label class="checkbox-inline">
                         <input type="radio" name="isSell"
-                               value=0 > LIMIT
+                               value=0 > Buy
                     </label>
                 </ul>
 
                 <ul>
-                    <li class="text-info">Type:</li>
-                    <!--<li><input type="text" value=""></li>-->
-                    <label class="checkbox-inline">
-                        <input type="radio" name="type"
-                               value="MARKET" checked> MARKET
+                    <li class="text-info" >Type:</li>
+                    <li id="type-select">
+                        <label class="checkbox-inline" >
+                            <input type="radio" name="type"
+                                   value="MARKET" checked> MARKET
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="type"
+                                   value="LIMIT" > LIMIT
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="type"
+                                   value="STOP"> STOP
                     </label>
-                    <label class="checkbox-inline">
-                        <input type="radio" name="type"
-                               value="LIMIT" > LIMIT
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="radio" name="type"
-                               value="STOP"> STOP
-                    </label>
+                    </li>
+                </ul>
+                <ul class="condition">
+
 
                 </ul>
-
-                <ul>
-                    <li class="text-info">Product:</li>
-                    <li><input type="text" value=""></li>
-                </ul>
-
-
-
                 <ul>
                     <li class="text-info">Price:</li>
-                    <li><input type="text" value=""></li>
+                    <li><input type="text" value="" name="price"></li>
                 </ul>
-                <ul>
-                    <li class="text-info">Price Float Quote</li>
-                    <li><input type="text" value=""></li>
-                </ul>
+
                 <ul>
                     <li class="text-info">Quantity:</li>
-                    <li><input type="text" value=""></li>
+                    <li><input type="text" value="" name="quantity"></li>
                 </ul>
 
                 <input class="orderbutton" type="submit" value="Add Order">
@@ -236,8 +229,20 @@
 
 </div>
 <script type="text/javascript">
-    $(function ($)
-    {
+
+
+</script>
+
+<!---->
+<div class="footer">
+    <div class="container">
+        <p class="copyright">Copyright &copy; 2016. All rights reserved.
+    </div>
+</div>
+<!---->
+</body>
+<script>
+    $(document).ready(function () {
         //弹出登录
         $(".addneworder").hover(function ()
                 {
@@ -265,15 +270,69 @@
             $(".order").fadeOut("fast");
             $("#mask").css({display: 'none'});
         });
+
+        $(".close").on('click',function () {
+            $(".order").fadeOut("fast");
+            $("#mask").css({display: 'none'});
+        });
+
+        $("#broker-select").on("change",
+            modiProductSelect
+        );
+
+        $("#type-select").on("change",modiCondition);
+        var username=getCookie("username");
+        if(username==null) username="";
+        showLoginInfo(username);
+        ajax("Query", "get", {
+            action: "userList",
+            filter: JSON.stringify({
+                username: username
+            })
+        }, function (data) {
+            var user = JSON.parse(data);
+            var userid = user[0].id;
+            var role=user[0].role;
+            if(role=="TRADER")
+                    $(".addneworder").show();
+            var filterStr=JSON.stringify({
+                brokerId: userid,
+                status: ["DOING","TODO"]
+            });
+            if(role=="TRADER")
+                filterStr=JSON.stringify({
+                    userId: userid,
+                    status: ["DOING","TODO"]
+                });
+            ajax("Query","get",{
+                action:"orderList",
+                filter: filterStr
+
+            },function (orderStr) {
+               // alert(sellStr);
+                var orderArr=JSON.parse(orderStr);
+                showAllOrders(orderArr);
+                showFilter('product','Order',orderArr);
+                showFilter('type','Order',orderArr);
+                if(role=="TRADER")
+                        showFilter('broker','Order',orderArr);
+                ajax("Query","get",{
+                    action:"userList",
+                    filter:JSON.stringify({
+                        role:"BROKER"
+                    })
+                },function (userStr) {
+                    //alert(userStr);
+                    var userJson=JSON.parse(userStr);
+                    modiBrokerSelect(userJson);
+                    modiProductSelect();
+                    modiCondition();
+                });
+            });
+        });
+
     });
+
 </script>
-<!---->
-<div class="footer">
-    <div class="container">
-        <p class="copyright">Copyright &copy; 2016. All rights reserved.
-    </div>
-</div>
-<!---->
-</body>
 </html>
 		

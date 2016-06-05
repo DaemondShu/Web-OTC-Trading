@@ -19,7 +19,9 @@
     <link href='http://fonts.useso.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
 
     <link type="text/css" rel="stylesheet" href="css/easy-responsive-tabs.css"/>
+    <script src="js/helpFunction.js"></script>
     <script src="js/easyResponsiveTabs.js" type="text/javascript"></script>
+    <script src="js/user.js"></script>
 
 </head>
 <body>
@@ -67,29 +69,33 @@
             <div class="reg">
                 <p>Welcome, please enter the folling to continue.</p>
                 <p>If you have previously registered with us, <a href="login.html">click here</a></p>
-                <form>
+                <form id="regForm" onsubmit="return register()">
                     <ul>
                         <li class="text-info">User Name:</li>
-                        <li><input type="text" value=""></li>
+                        <li><input type="text" value="" name="username"></li>
                     </ul>
                     <ul>
                         <li class="text-info">Password:</li>
-                        <li><input type="password" value=""></li>
+                        <li><input type="password" value="" name="password1"></li>
                     </ul>
                     <ul>
                         <li class="text-info">Re-enter Password:</li>
-                        <li><input type="password" value=""></li>
+                        <li><input type="password" value="" name="password2"></li>
                     </ul>
 
 
                     <ul>
                         <li class="text-info">Company Name:</li>
-                        <li><input type="text" value=""></li>
+                        <li><input type="text" value="" name="company"></li>
                     </ul>
 
                     <ul>
-                        <li class="text-info">Is Broker:</li>
-                        <li><input type="checkbox"></li>
+                        <li class="text-info">Role:</li>
+                        <li>
+                            <input type="radio" value="BROKER" name="role">Broker
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" value="TRADER" name="role">Trader
+                        </li>
                     </ul>
 
 

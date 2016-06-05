@@ -6,13 +6,12 @@
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
-    <!-- Custom Theme files -->
-    <link href="css/hover.css" rel="stylesheet" media="all">
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <!-- Custom Theme files -->
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
+    <script src="js/helpFunction.js"></script>
+    <script src="js/browsing.js"></script>
+    <script src="js/user.js"></script>
     <script type="application/x-javascript"> addEventListener("load", function ()
     {
         setTimeout(hideURLbar, 0);
@@ -53,10 +52,14 @@
 
         <div class="header-right">
 
-            <div class="signin">
-                <ul>
-                    <li><a href="registration.html">REGISTRATION</a> <span>/<span> &nbsp;</li>
+            <div class="signin" >
+                <ul class="notLogin" style="display: block">
+                    <li><a href="registration.html">REGISTRATION</a> <span>/</span> &nbsp;</li>
                     <li><a href="login.html"> LOGIN</a></li>
+                </ul>
+                <ul class="Logined" style="display: none" >
+                    <li><nobr id="username"></nobr> <span></span> &nbsp;</li>
+                    <li><a onclick="logout()"> LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -88,93 +91,29 @@
                         </thead>
                         <tbody>
 
-                        <tr>
-                            <td>1</td>
-                            <td>M</td>
-                            <td>Nature Gas</td>
-                            <th>176</th>
-                            <td>100 </td>
-                            <!--<td>2016/4/30</td>-->
-                            <td>SunMeng <br> SJTU</td>
-                            <td>ShuBuqing <br> SJTU </td>
-                        </tr>
 
-
-                        <tr>
-                            <td>2</td>
-                            <td>M</td>
-                            <td>Nature Gas</td>
-                            <th>176</th>
-                            <td>100 </td>
-                            <!--<td>2016/4/30</td>-->
-                            <td>SunMeng <br> SJTU</td>
-                            <td>LiuXiao <br> SJTU </td>
-                        </tr>
 
                         </tbody>
                     </table>
                 </div>
 
-                <!--<table class="table table-bordered mb30">-->
-                    <!--<thead>-->
-                    <!--<tr>-->
-                        <!--<th>ID</th>-->
-                        <!--<th>Name</th>-->
-                        <!--<th>Price</th>-->
-                        <!--<th>Time</th>-->
-                        <!--<th>Quantity</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
 
-
-                    <!--<tr>-->
-                        <!--<td>1</td>-->
-                        <!--<td><a href="single.html">Nature Gas</a></td>-->
-                        <!--<td>176</td>-->
-                        <!--<td>2016/4/30</td>-->
-                        <!--<td>100</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                        <!--<td>1</td>-->
-                        <!--<td>Nature Gas</td>-->
-                        <!--<td>176</td>-->
-                        <!--<td>2016/4/30</td>-->
-                        <!--<td>100</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-            </div><!-- table-responsive -->
+            </div>
 
         </div>
     </div>
     <div class="col-md-3 side-bar">
-        <div class="categories">
-            <h3>CATEGORIES</h3>
-            <ul>
-                <li><a href="#">????</a></li>
-                <li><a href="#">???</a></li>
-                <li><a href="#">???</a></li>
-                <li><a href="#">???</a></li>
+        <div id="filter">
 
-            </ul>
         </div>
-        <div class="sales">
+        <!--<div class="name-searching">-->
+            <!--<h4>Search</h4>-->
+            <!--<ul>-->
+                <!--<input type="text" placeholder="search by futures" required/>-->
+                <!--<input type="button" value="Ok">-->
+            <!--</ul>-->
+        <!--</div>-->
 
-            <div class="pricing">
-                <h4>State</h4>
-                <input type="text" placeholder="State" required/>
-                <input type="button" value="Ok">
-                <div class="clearfix"></div>
-            </div>
-            <div class="name-searching">
-                <h4>Search</h4>
-                <ul>
-                    <input type="text" placeholder="search by futures" required/>
-                    <input type="button" value="Ok">
-                </ul>
-            </div>
-        </div>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -187,4 +126,53 @@
 </div>
 <!---->
 </body>
+<script>
+    $(document).ready(function () {
+        var username=getCookie("username");
+        if(username==null) username="";
+        showLoginInfo(username);
+        ajax("Query", "get", {
+            action: "userList",
+            filter: JSON.stringify({
+                username: username
+            })
+        }, function (data) {
+            var user = JSON.parse(data);
+            var userid = user[0].id;
+            var userRole = user[0].role;
+            var filterStr=JSON.stringify({
+                brokerId:userid,
+
+            });
+            if(userRole=="TRADER")
+                    filterStr=JSON.stringify({
+                        or:{
+                            buyerId:userid,
+                            sellerId:userid
+                        }
+                    });
+            ajax("Query","get",{
+                action:"tradeList",
+                filter:filterStr
+            },function (str) {
+                //alert(str);
+                var jsonArr=JSON.parse(str);
+                showTrade(jsonArr);
+                $("#filter").html("");
+                showFilter('product','Trade',jsonArr);
+                if(userRole=="BROKER"){
+                    showFilter('seller','Trade',jsonArr);
+                    showFilter('buyer','Trade',jsonArr);
+                }
+                else if(userRole=="TRADER")
+                {
+                    showFilter('broker','Trade',jsonArr);
+                }
+                else ;
+
+
+            })
+        });
+    })
+</script>
 </html>
