@@ -22,7 +22,8 @@ function register()
                     role:formData.role
                 })
             },function (data) {
-                //alert(data);
+                msg("Register success");
+               // window.location="login.html";
 
             });
 
@@ -36,7 +37,7 @@ function login() {
     formData.action="login";
     ajax("User","get",formData,function (data) {
         setCookie("username",formData.username,"d1","/");
-
+        window.location="index.html";
     });
     return false;
 }
@@ -50,10 +51,16 @@ function showLoginInfo(username) {
 
 
     }
+    else
+    {
+        $("#orderHref").hide();
+        $("#tradeHref").hide();
+    }
+
 
 }
 
 function logout() {
     setCookie("username","","s0","/");
-    
+    window.location="index.html";
 }
