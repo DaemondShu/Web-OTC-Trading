@@ -69,6 +69,9 @@ public class LogicActionBean implements LogicAction
 
 
             order.setBrokerId(dataManager.getProduct(order.getProductId()).getBrokerId());
+
+            if (order.getIsSell() == 1 && order.getPrice() == null)
+                throw new Exception("no price");
             /*
             if (order.equals("LIMIT"))
                 order.setCondition();*/

@@ -102,6 +102,9 @@ function showOrder(jsonArr,str) {
     var tmpStr="";
     for(var i=0;i<len;i++)
     {
+        if (jsonArr[i].isSell == 0)
+            jsonArr[i].price = "none";
+
         tmpStr+="<tr><td>"+jsonArr[i].id+"</td><td>"+jsonArr[i].product+"</td><td>"+jsonArr[i].type
             +"</td><td>"+jsonArr[i].broker+"</td><td>"+jsonArr[i].price+"</td><td>"+jsonArr[i].surplusVol+"/"+jsonArr[i].expectedVol
             +"</td><td><a onclick='cancelOrder("+jsonArr[i].id+")'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
@@ -114,7 +117,10 @@ function cancelOrder(orderid){
     ajax("Logic","post",{
         action : "cancelOrder",
         orderId: orderid
-    })
+    },function ()
+    {
+        window.location.reload();
+    });
 }
 function showTrade(jsonArr) {
     var tbody=$(".table-responsive").find("tbody");
@@ -401,7 +407,10 @@ function addOrder() {
 
 
                 })
-            });
+            },function ()
+            {
+                window.location.reload();
+            } );
         });
     });
     return false;
